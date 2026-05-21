@@ -57,6 +57,46 @@ class OpenApiSpec
           ],
         ],
         '/api/email-filters' => [
+          'post' => [
+            'tags' => ['Email Filters'],
+            'summary' => 'Register email filter',
+            'description' => 'تسجيل بيانات رسالة بريد جديدة في فلاتر البريد.',
+            'operationId' => 'storeEmailFilter',
+            'requestBody' => [
+              'required' => true,
+              'content' => [
+                'application/json' => [
+                  'schema' => ['$ref' => '#/components/schemas/EmailFilterCreateInput'],
+                ],
+              ],
+            ],
+            'responses' => [
+              '200' => [
+                'description' => 'الاستجابة دائماً HTTP 200 — النجاح أو الفشل يُحدَّد عبر success في الجسم',
+                'content' => [
+                  'application/json' => [
+                    'schema' => [
+                      'oneOf' => [
+                        [
+                          'type' => 'object',
+                          'properties' => [
+                            'success' => ['type' => 'boolean', 'example' => true],
+                            'data' => [
+                              'type' => 'object',
+                              'properties' => [
+                                'email' => ['$ref' => '#/components/schemas/EmailFilterItem'],
+                              ],
+                            ],
+                          ],
+                        ],
+                        ['$ref' => '#/components/schemas/ErrorResponse'],
+                      ],
+                    ],
+                  ],
+                ],
+              ],
+            ],
+          ],
           'get' => [
             'tags' => ['Email Filters'],
             'summary' => 'Get email filter by id',
@@ -103,6 +143,17 @@ class OpenApiSpec
       ],
       'components' => [
         'schemas' => [
+          'EmailFilterCreateInput' => [
+            'type' => 'object',
+            'required' => ['email_id', 'from', 'subject'],
+            'properties' => [
+              'email_id' => ['type' => 'string', 'example' => 'msg-10043'],
+              'from' => ['type' => 'string', 'example' => 'client@example.com'],
+              'subject' => ['type' => 'string', 'example' => 'طلب عرض سعر'],
+              'snippet' => ['type' => 'string', 'example' => 'نرجو إرسال عرض السعر خلال 48 ساعة...'],
+              'date' => ['type' => 'string', 'example' => '2026-05-21 14:00'],
+            ],
+          ],
           'EmailFilterItem' => [
             'type' => 'object',
             'properties' => [

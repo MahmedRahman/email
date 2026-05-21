@@ -2,70 +2,45 @@
 
 namespace App\Services\EmailFilters;
 
+use App\Models\EmailFilter;
+use Illuminate\Support\Str;
+
 class EmailFiltersDataService
 {
   public function getEmails(): array
   {
-    return [
-      [
-        'id' => '18f3a2b1c4d5e6f7',
-        'email_id' => 'msg-10042',
-        'from' => 'billing@stripe.com',
-        'subject' => 'فاتورة شهر مايو — تم الدفع',
-        'snippet' => 'تم استلام دفعتك بنجاح. يمكنك تحميل الفاتورة من لوحة التحكم...',
-        'date' => '2026-05-21 09:42',
-      ],
-      [
-        'id' => '18f2e8910a1b2c3d',
-        'email_id' => 'msg-10041',
-        'from' => 'noreply@github.com',
-        'subject' => '[Email_Filter] Pull request merged',
-        'snippet' => 'Your pull request #12 was merged into main by mohamed...',
-        'date' => '2026-05-20 18:15',
-      ],
-      [
-        'id' => '18f1d44556677889',
-        'email_id' => 'msg-10040',
-        'from' => 'newsletter@medium.com',
-        'subject' => 'أفضل 5 مقالات عن الأتمتة هذا الأسبوع',
-        'snippet' => 'اكتشف كيف تربط n8n مع Gmail لبناء فلاتر ذكية...',
-        'date' => '2026-05-20 08:00',
-      ],
-      [
-        'id' => '18f0abc123456789',
-        'email_id' => 'msg-10039',
-        'from' => 'hr@company.com',
-        'subject' => 'تذكير: اجتماع الفريق غداً',
-        'snippet' => 'مرحباً، نذكّرك باجتماع الفريق الأسبوعي الساعة 10 صباحاً...',
-        'date' => '2026-05-19 14:30',
-      ],
-      [
-        'id' => '18ef9876543210ab',
-        'email_id' => 'msg-10038',
-        'from' => 'alerts@n8n.io',
-        'subject' => 'Workflow execution failed',
-        'snippet' => 'Workflow "تنبيه البريد العاجل" failed at node Gmail Trigger...',
-        'date' => '2026-05-19 11:02',
-      ],
-      [
-        'id' => '18ee112233445566',
-        'email_id' => 'msg-10037',
-        'from' => 'support@amazon.ae',
-        'subject' => 'تم شحن طلبك #4021-8834',
-        'snippet' => 'طلبك في الطريق. التسليم المتوقع يوم الأحد...',
-        'date' => '2026-05-18 16:45',
-      ],
-    ];
+    return EmailFilter::query()
+      ->orderByDesc('date')
+      ->get()
+      ->map(fn (EmailFilter $email) => $email->toApiArray())
+      ->all();
   }
 
   public function findByEmailId(string $emailId): ?array
   {
-    foreach ($this->getEmails() as $email) {
-      if ($email['email_id'] === $emailId) {
-        return $email;
-      }
+    $email = EmailFilter::query()->where('email_id', $emailId)->first();
+
+    return $email?->toApiArray();
+  }
+
+  /**
+   * @param  array{email_id: string, from: string, subject: string, snippet?: string|null, date?: string|null}  $data
+   */
+  public function store(array $data): ?array
+  {
+    if (EmailFilter::query()->where('email_id', $data['email_id'])->exists()) {
+      return null;
     }
 
-    return null;
+    $email = EmailFilter::query()->create([
+      'id' => Str::replace('-', '', (string) Str::uuid()),
+      'email_id' => $data['email_id'],
+      'from_address' => $data['from'],
+      'subject' => $data['subject'],
+      'snippet' => $data['snippet'] ?? '',
+      'date' => $data['date'] ?? now()->format('Y-m-d H:i'),
+    ]);
+
+    return $email->toApiArray();
   }
 }

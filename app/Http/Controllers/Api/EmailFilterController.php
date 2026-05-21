@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreEmailFilterRequest;
 use App\Services\EmailFilters\EmailFiltersDataService;
 use App\Services\Settings\SettingsDataService;
 use Illuminate\Http\JsonResponse;
@@ -25,6 +26,25 @@ class EmailFilterController extends Controller
         'count' => count($emails),
         'email_instructions' => $this->settingsData->getEmailInstructions(),
         'emails' => $emails,
+      ],
+    ]);
+  }
+
+  public function store(StoreEmailFilterRequest $request): JsonResponse
+  {
+    $email = $this->emailFiltersData->store($request->validated());
+
+    if ($email === null) {
+      return response()->json([
+        'success' => false,
+        'message' => 'معرف الرسالة email_id مستخدم مسبقاً.',
+      ]);
+    }
+
+    return response()->json([
+      'success' => true,
+      'data' => [
+        'email' => $email,
       ],
     ]);
   }

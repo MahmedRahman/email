@@ -8,9 +8,9 @@
         <h2 class="text-lg font-semibold text-slate-800">Swagger — Email Filter API</h2>
         <p class="mt-1 text-sm text-slate-500">
             وثائق واختبار واجهات
-            <code class="rounded bg-slate-100 px-1.5 py-0.5 text-xs" dir="ltr">GET /api/email-filters/information</code>
-            و
-            <code class="rounded bg-slate-100 px-1.5 py-0.5 text-xs" dir="ltr">GET /api/email-filters?id=...</code>
+            <code class="rounded bg-slate-100 px-1.5 py-0.5 text-xs" dir="ltr">GET /api/email-filters/information</code>،
+            <code class="rounded bg-slate-100 px-1.5 py-0.5 text-xs" dir="ltr">GET /api/email-filters?id=...</code>،
+            <code class="rounded bg-slate-100 px-1.5 py-0.5 text-xs" dir="ltr">POST /api/email-filters</code>
         </p>
     </div>
 

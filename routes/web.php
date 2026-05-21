@@ -28,5 +28,6 @@ Route::middleware('auth.demo')->group(function () {
   Route::get('/api/openapi.json', [SwaggerController::class, 'spec'])->name('swagger.spec');
   Route::get('/api/email-filters/information', [EmailFilterApiController::class, 'information'])->name('api.email-filters.information');
   Route::get('/api/email-filters', [EmailFilterApiController::class, 'show'])->name('api.email-filters.show');
+  Route::post('/api/email-filters', [EmailFilterApiController::class, 'store'])->name('api.email-filters.store');
   Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });
