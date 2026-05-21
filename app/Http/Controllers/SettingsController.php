@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\FormatEmailInstructionsRequest;
+use App\Http\Requests\FormatInstructionsRequest;
 use App\Http\Requests\UpdateSettingsRequest;
 use App\Services\Settings\InstructionFormatterService;
 use App\Services\Settings\SettingsDataService;
@@ -21,15 +21,19 @@ class SettingsController extends Controller
   {
     return view('settings.index', [
       'emailInstructions' => $this->settingsData->getEmailInstructions(),
+      'replyInstructions' => $this->settingsData->getReplyInstructions(),
       'hasDeepSeekApiKey' => $this->settingsData->hasDeepSeekApiKey(),
     ]);
   }
 
-  public function formatInstructions(FormatEmailInstructionsRequest $request): JsonResponse
+  public function formatInstructions(FormatInstructionsRequest $request): JsonResponse
   {
+    $type = $request->validated('type');
+
     try {
       $formatted = $this->instructionFormatter->format(
-        $request->validated('email_instructions'),
+        $request->validated('instructions'),
+        $type,
       );
     } catch (\Throwable $exception) {
       return response()->json([
@@ -38,10 +42,12 @@ class SettingsController extends Controller
       ]);
     }
 
+    $field = $type === 'reply' ? 'reply_instructions' : 'email_instructions';
+
     return response()->json([
       'success' => true,
       'data' => [
-        'email_instructions' => $formatted,
+        $field => $formatted,
       ],
     ]);
   }
@@ -49,6 +55,7 @@ class SettingsController extends Controller
   public function update(UpdateSettingsRequest $request): RedirectResponse
   {
     $this->settingsData->saveEmailInstructions($request->validated('email_instructions'));
+    $this->settingsData->saveReplyInstructions($request->validated('reply_instructions'));
 
     if ($request->filled('deepseek_api_key')) {
       $this->settingsData->saveDeepSeekApiKey($request->input('deepseek_api_key'));

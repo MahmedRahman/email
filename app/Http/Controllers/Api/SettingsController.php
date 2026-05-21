@@ -18,6 +18,7 @@ class SettingsController extends Controller
       'success' => true,
       'data' => [
         'email_instructions' => $this->settingsData->getEmailInstructions(),
+        'reply_instructions' => $this->settingsData->getReplyInstructions(),
       ],
     ]);
   }

@@ -25,6 +25,7 @@ class EmailFilterController extends Controller
       'data' => [
         'count' => count($emails),
         'email_instructions' => $this->settingsData->getEmailInstructions(),
+        'reply_instructions' => $this->settingsData->getReplyInstructions(),
         'emails' => $emails,
       ],
     ]);
@@ -74,6 +75,7 @@ class EmailFilterController extends Controller
       'data' => [
         'email' => $email,
         'email_instructions' => $this->settingsData->getEmailInstructions(),
+        'reply_instructions' => $this->settingsData->getReplyInstructions(),
       ],
     ]);
   }

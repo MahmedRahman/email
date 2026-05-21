@@ -89,19 +89,34 @@
         </section>
     </div>
 
-    <section class="mt-6 rounded-2xl border border-slate-100 bg-white shadow-sm">
-        <div class="border-b border-slate-100 px-5 py-4 sm:px-6">
-            <h3 class="text-base font-semibold text-slate-800">Email instructions</h3>
-            <p class="mt-1 text-sm text-slate-500">تعليمات التصنيف والمعالجة المستخدمة حالياً في النظام</p>
-        </div>
-        <div class="px-5 py-5 sm:px-6">
-            <p class="whitespace-pre-wrap text-sm leading-relaxed text-slate-700">{{ $emailInstructions ?: '—' }}</p>
-            <a
-                href="{{ route('settings.index') }}"
-                class="mt-4 inline-block text-sm font-medium text-blue-600 hover:text-blue-700"
-            >
-                تعديل الإعدادات
-            </a>
-        </div>
-    </section>
+    <div class="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <section class="rounded-2xl border border-slate-100 bg-white shadow-sm">
+            <div class="border-b border-slate-100 px-5 py-4 sm:px-6">
+                <h3 class="text-base font-semibold text-slate-800">Email instructions</h3>
+                <p class="mt-1 text-sm text-slate-500">تعليمات التصنيف والمعالجة</p>
+            </div>
+            <div class="px-5 py-5 sm:px-6">
+                <p class="whitespace-pre-wrap text-sm leading-relaxed text-slate-700">{{ $emailInstructions ?: '—' }}</p>
+            </div>
+        </section>
+
+        <section class="rounded-2xl border border-slate-100 bg-white shadow-sm">
+            <div class="border-b border-slate-100 px-5 py-4 sm:px-6">
+                <h3 class="text-base font-semibold text-slate-800">Reply instructions</h3>
+                <p class="mt-1 text-sm text-slate-500">تعليمات الرد على البريد</p>
+            </div>
+            <div class="px-5 py-5 sm:px-6">
+                <p class="whitespace-pre-wrap text-sm leading-relaxed text-slate-700">{{ $replyInstructions ?: '—' }}</p>
+            </div>
+        </section>
+    </div>
+
+    <div class="mt-4">
+        <a
+            href="{{ route('settings.index') }}"
+            class="inline-block text-sm font-medium text-blue-600 hover:text-blue-700"
+        >
+            تعديل الإعدادات
+        </a>
+    </div>
 @endsection

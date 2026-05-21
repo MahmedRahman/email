@@ -34,6 +34,7 @@ class EmailFiltersController extends Controller
     return view('filters.show', [
       'email' => $email,
       'emailInstructions' => $this->settingsData->getEmailInstructions(),
+      'replyInstructions' => $this->settingsData->getReplyInstructions(),
     ]);
   }
 

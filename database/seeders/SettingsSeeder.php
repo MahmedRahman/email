@@ -13,5 +13,10 @@ class SettingsSeeder extends Seeder
       ['key' => 'email_instructions'],
       ['value' => (string) config('demo.email_instructions', '')],
     );
+
+    Setting::query()->updateOrCreate(
+      ['key' => 'reply_instructions'],
+      ['value' => (string) config('demo.reply_instructions', '')],
+    );
   }
 }

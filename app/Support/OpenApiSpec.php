@@ -63,6 +63,7 @@ class OpenApiSpec
                               'properties' => [
                                 'count' => ['type' => 'integer', 'example' => 6],
                                 'email_instructions' => ['type' => 'string'],
+                                'reply_instructions' => ['type' => 'string'],
                                 'emails' => [
                                   'type' => 'array',
                                   'items' => ['$ref' => '#/components/schemas/EmailFilterItem'],
@@ -151,6 +152,7 @@ class OpenApiSpec
                               'properties' => [
                                 'email' => ['$ref' => '#/components/schemas/EmailFilterItem'],
                                 'email_instructions' => ['type' => 'string'],
+                                'reply_instructions' => ['type' => 'string'],
                               ],
                             ],
                           ],
@@ -173,6 +175,10 @@ class OpenApiSpec
               'email_instructions' => [
                 'type' => 'string',
                 'description' => 'تعليمات تصنيف ومعالجة البريد',
+              ],
+              'reply_instructions' => [
+                'type' => 'string',
+                'description' => 'تعليمات صياغة الرد على البريد',
               ],
             ],
           ],
