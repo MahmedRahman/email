@@ -15,6 +15,7 @@ class UpdateSettingsRequest extends FormRequest
   {
     return [
       'email_instructions' => ['required', 'string', 'max:10000'],
+      'deepseek_api_key' => ['nullable', 'string', 'max:500'],
     ];
   }
 

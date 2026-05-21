@@ -2,18 +2,23 @@
 
 namespace App\Services\AI;
 
+use App\Services\Settings\SettingsDataService;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
 use RuntimeException;
 
 class DeepSeekService
 {
+  public function __construct(
+    private readonly SettingsDataService $settingsData,
+  ) {}
+
   public function chat(string $systemPrompt, string $userPrompt): string
   {
-    $apiKey = config('deepseek.api_key');
+    $apiKey = $this->settingsData->getDeepSeekApiKey();
 
     if (blank($apiKey)) {
-      throw new RuntimeException('مفتاح DeepSeek غير مُعرَّف. أضف DEEPSEEK_API_KEY في ملف .env');
+      throw new RuntimeException('مفتاح DeepSeek غير مُعرَّف. أدخله من صفحة الإعدادات.');
     }
 
     try {

@@ -23,6 +23,42 @@
         <form method="POST" action="{{ route('settings.update') }}" class="p-6 sm:p-8">
             @csrf
 
+            <div class="mb-8 rounded-xl border border-slate-100 bg-slate-50/50 p-5">
+                <div class="mb-3 flex flex-wrap items-center justify-between gap-2">
+                    <label for="deepseek_api_key" class="text-sm font-semibold text-slate-800">
+                        مفتاح DeepSeek API
+                    </label>
+                    @if ($hasDeepSeekApiKey)
+                        <span class="rounded-lg bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700 ring-1 ring-emerald-600/10">
+                            مُفعّل
+                        </span>
+                    @else
+                        <span class="rounded-lg bg-amber-50 px-2.5 py-1 text-xs font-medium text-amber-700 ring-1 ring-amber-600/10">
+                            غير مُعرَّف
+                        </span>
+                    @endif
+                </div>
+                <p class="mb-3 text-sm text-slate-500">
+                    مطلوب لتنسيق التعليمات بالذكاء الاصطناعي. احصل على المفتاح من
+                    <a href="https://platform.deepseek.com/" target="_blank" rel="noopener noreferrer" class="font-medium text-blue-600 hover:text-blue-700">platform.deepseek.com</a>.
+                </p>
+                <input
+                    type="password"
+                    id="deepseek_api_key"
+                    name="deepseek_api_key"
+                    autocomplete="off"
+                    dir="ltr"
+                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition-shadow placeholder:text-slate-400 focus:border-violet-400 focus:ring-4 focus:ring-violet-100 @error('deepseek_api_key') border-rose-300 focus:border-rose-400 focus:ring-rose-100 @enderror"
+                    placeholder="{{ $hasDeepSeekApiKey ? '•••••••••••••••• (اتركه فارغاً للإبقاء على المفتاح الحالي)' : 'sk-...' }}"
+                >
+                @error('deepseek_api_key')
+                    <p class="mt-2 text-sm text-rose-600">{{ $message }}</p>
+                @enderror
+                <p class="mt-2 text-xs text-slate-400">
+                    يُخزَّن مشفّراً في قاعدة البيانات. اترك الحقل فارغاً عند الحفظ إن لم ترد تغيير المفتاح.
+                </p>
+            </div>
+
             <div>
                 <label for="email_instructions" class="mb-1.5 block text-sm font-semibold text-slate-800">
                     Email instructions
@@ -60,7 +96,7 @@
                     </svg>
                     <span id="format-instructions-label">تنسيق التعليمات بالذكاء الاصطناعي</span>
                 </button>
-                <p class="text-xs text-slate-400">يُحفظ في قاعدة البيانات · التنسيق عبر DeepSeek</p>
+                <p class="text-xs text-slate-400">التنسيق عبر DeepSeek بعد حفظ المفتاح</p>
             </div>
         </form>
     </section>
