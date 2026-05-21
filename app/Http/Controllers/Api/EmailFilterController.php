@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Services\EmailFilters\EmailFiltersDataService;
 use App\Services\Settings\SettingsDataService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class EmailFilterController extends Controller
 {
@@ -28,14 +29,23 @@ class EmailFilterController extends Controller
     ]);
   }
 
-  public function show(string $emailId): JsonResponse
+  public function show(Request $request): JsonResponse
   {
-    $email = $this->emailFiltersData->findByEmailId($emailId);
+    $id = $request->query('id');
+
+    if (! is_string($id) || $id === '') {
+      return response()->json([
+        'success' => false,
+        'message' => 'معامل id مطلوب.',
+      ], 400);
+    }
+
+    $email = $this->emailFiltersData->findByEmailId($id);
 
     if ($email === null) {
       return response()->json([
         'success' => false,
-        'message' => 'لم يتم العثور على رسالة بهذا EmailId.',
+        'message' => 'لم يتم العثور على رسالة بهذا المعرف.',
       ], 404);
     }
 

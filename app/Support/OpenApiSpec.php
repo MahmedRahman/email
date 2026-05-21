@@ -59,22 +59,30 @@ class OpenApiSpec
             ],
           ],
         ],
-        '/api/email-filters/{email_id}' => [
+        '/api/email-filters' => [
           'get' => [
             'tags' => ['Email Filters'],
-            'summary' => 'Get email filter by EmailId',
-            'description' => 'يعيد رسالة واحدة مطابقة لـ email_id المحدد.',
-            'operationId' => 'getEmailFilterByEmailId',
+            'summary' => 'Get email filter by id',
+            'description' => 'يعيد رسالة واحدة مطابقة لمعرف id المُمرَّر في Query Parameters.',
+            'operationId' => 'getEmailFilterById',
             'parameters' => [
               [
-                'name' => 'email_id',
-                'in' => 'path',
+                'name' => 'id',
+                'in' => 'query',
                 'required' => true,
                 'description' => 'معرف الرسالة (EmailId)',
                 'schema' => ['type' => 'string', 'example' => 'msg-10042'],
               ],
             ],
             'responses' => [
+              '400' => [
+                'description' => 'معامل id غير موجود أو فارغ',
+                'content' => [
+                  'application/json' => [
+                    'schema' => ['$ref' => '#/components/schemas/ErrorResponse'],
+                  ],
+                ],
+              ],
               '200' => [
                 'description' => 'تفاصيل الرسالة',
                 'content' => [
