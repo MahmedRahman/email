@@ -25,34 +25,31 @@ class OpenApiSpec
             'operationId' => 'getEmailFilterInformation',
             'responses' => [
               '200' => [
-                'description' => 'معلومات فلاتر البريد',
+                'description' => 'الاستجابة دائماً HTTP 200 — النجاح أو الفشل يُحدَّد عبر success في الجسم',
                 'content' => [
                   'application/json' => [
                     'schema' => [
-                      'type' => 'object',
-                      'properties' => [
-                        'success' => ['type' => 'boolean', 'example' => true],
-                        'data' => [
+                      'oneOf' => [
+                        [
                           'type' => 'object',
                           'properties' => [
-                            'count' => ['type' => 'integer', 'example' => 6],
-                            'email_instructions' => ['type' => 'string'],
-                            'emails' => [
-                              'type' => 'array',
-                              'items' => ['$ref' => '#/components/schemas/EmailFilterItem'],
+                            'success' => ['type' => 'boolean', 'example' => true],
+                            'data' => [
+                              'type' => 'object',
+                              'properties' => [
+                                'count' => ['type' => 'integer', 'example' => 6],
+                                'email_instructions' => ['type' => 'string'],
+                                'emails' => [
+                                  'type' => 'array',
+                                  'items' => ['$ref' => '#/components/schemas/EmailFilterItem'],
+                                ],
+                              ],
                             ],
                           ],
                         ],
+                        ['$ref' => '#/components/schemas/ErrorResponse'],
                       ],
                     ],
-                  ],
-                ],
-              ],
-              '401' => [
-                'description' => 'غير مصرح — يلزم تسجيل الدخول',
-                'content' => [
-                  'application/json' => [
-                    'schema' => ['$ref' => '#/components/schemas/ErrorResponse'],
                   ],
                 ],
               ],
@@ -75,47 +72,28 @@ class OpenApiSpec
               ],
             ],
             'responses' => [
-              '400' => [
-                'description' => 'معامل id غير موجود أو فارغ',
-                'content' => [
-                  'application/json' => [
-                    'schema' => ['$ref' => '#/components/schemas/ErrorResponse'],
-                  ],
-                ],
-              ],
               '200' => [
-                'description' => 'تفاصيل الرسالة',
+                'description' => 'الاستجابة دائماً HTTP 200 — النجاح أو الفشل يُحدَّد عبر success في الجسم',
                 'content' => [
                   'application/json' => [
                     'schema' => [
-                      'type' => 'object',
-                      'properties' => [
-                        'success' => ['type' => 'boolean', 'example' => true],
-                        'data' => [
+                      'oneOf' => [
+                        [
                           'type' => 'object',
                           'properties' => [
-                            'email' => ['$ref' => '#/components/schemas/EmailFilterItem'],
-                            'email_instructions' => ['type' => 'string'],
+                            'success' => ['type' => 'boolean', 'example' => true],
+                            'data' => [
+                              'type' => 'object',
+                              'properties' => [
+                                'email' => ['$ref' => '#/components/schemas/EmailFilterItem'],
+                                'email_instructions' => ['type' => 'string'],
+                              ],
+                            ],
                           ],
                         ],
+                        ['$ref' => '#/components/schemas/ErrorResponse'],
                       ],
                     ],
-                  ],
-                ],
-              ],
-              '404' => [
-                'description' => 'EmailId غير موجود',
-                'content' => [
-                  'application/json' => [
-                    'schema' => ['$ref' => '#/components/schemas/ErrorResponse'],
-                  ],
-                ],
-              ],
-              '401' => [
-                'description' => 'غير مصرح — يلزم تسجيل الدخول',
-                'content' => [
-                  'application/json' => [
-                    'schema' => ['$ref' => '#/components/schemas/ErrorResponse'],
                   ],
                 ],
               ],

@@ -37,7 +37,7 @@ class EmailFilterController extends Controller
       return response()->json([
         'success' => false,
         'message' => 'معامل id مطلوب.',
-      ], 400);
+      ]);
     }
 
     $email = $this->emailFiltersData->findByEmailId($id);
@@ -46,7 +46,7 @@ class EmailFilterController extends Controller
       return response()->json([
         'success' => false,
         'message' => 'لم يتم العثور على رسالة بهذا المعرف.',
-      ], 404);
+      ]);
     }
 
     return response()->json([

@@ -15,7 +15,7 @@ class EnsureAuthenticated
         return response()->json([
           'success' => false,
           'message' => 'غير مصرح. يلزم تسجيل الدخول.',
-        ], 401);
+        ]);
       }
 
       return redirect()->route('login');
