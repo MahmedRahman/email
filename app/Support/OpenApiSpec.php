@@ -14,7 +14,7 @@ class OpenApiSpec
         'version' => '1.0.0',
       ],
       'servers' => [
-        ['url' => url('/'), 'description' => 'التطبيق الحالي'],
+        ['url' => '/', 'description' => 'التطبيق الحالي'],
       ],
       'paths' => [
         '/api/email-filters/information' => [

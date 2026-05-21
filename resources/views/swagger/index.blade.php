@@ -25,7 +25,7 @@
     <script>
         window.addEventListener('DOMContentLoaded', () => {
             SwaggerUIBundle({
-                url: @json($openApiUrl),
+                url: '/api/openapi.json',
                 dom_id: '#swagger-ui',
                 deepLinking: true,
                 persistAuthorization: true,

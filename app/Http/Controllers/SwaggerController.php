@@ -10,9 +10,7 @@ class SwaggerController extends Controller
 {
   public function index(): View
   {
-    return view('swagger.index', [
-      'openApiUrl' => route('swagger.spec'),
-    ]);
+    return view('swagger.index');
   }
 
   public function spec(): JsonResponse
