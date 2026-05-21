@@ -38,7 +38,9 @@ class EmailFiltersDataService
       'from_address' => $data['from'],
       'subject' => $data['subject'],
       'snippet' => $data['snippet'] ?? '',
-      'date' => $data['date'] ?? now()->format('Y-m-d H:i'),
+      'date' => filled($data['date'] ?? null)
+        ? trim((string) $data['date'])
+        : now()->format('Y-m-d H:i'),
     ]);
 
     return $email->toApiArray();

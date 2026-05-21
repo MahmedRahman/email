@@ -13,6 +13,13 @@ class StoreEmailFilterRequest extends FormRequest
     return true;
   }
 
+  protected function prepareForValidation(): void
+  {
+    if ($this->has('date') && ! filled($this->input('date'))) {
+      $this->merge(['date' => null]);
+    }
+  }
+
   public function rules(): array
   {
     return [

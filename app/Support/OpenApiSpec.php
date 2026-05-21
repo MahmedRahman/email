@@ -10,7 +10,7 @@ class OpenApiSpec
       'openapi' => '3.0.3',
       'info' => [
         'title' => 'Email Filter API',
-        'description' => 'واجهة برمجة مساعد البريد — فلاتر البريد والإعدادات',
+        'description' => 'واجهة برمجة مساعد البريد — فلاتر البريد. لا يتطلب تسجيل دخول.',
         'version' => '1.0.0',
       ],
       'servers' => [
@@ -60,7 +60,7 @@ class OpenApiSpec
           'post' => [
             'tags' => ['Email Filters'],
             'summary' => 'Register email filter',
-            'description' => 'تسجيل بيانات رسالة بريد جديدة في فلاتر البريد.',
+            'description' => 'تسجيل بيانات رسالة بريد جديدة. الحقل date اختياري — إن لم يُرسل يُستخدم تاريخ ووقت السيرفر.',
             'operationId' => 'storeEmailFilter',
             'requestBody' => [
               'required' => true,
@@ -151,7 +151,11 @@ class OpenApiSpec
               'from' => ['type' => 'string', 'example' => 'client@example.com'],
               'subject' => ['type' => 'string', 'example' => 'طلب عرض سعر'],
               'snippet' => ['type' => 'string', 'example' => 'نرجو إرسال عرض السعر خلال 48 ساعة...'],
-              'date' => ['type' => 'string', 'example' => '2026-05-21 14:00'],
+              'date' => [
+                'type' => 'string',
+                'description' => 'اختياري — إن تُرك فارغاً يُستخدم تاريخ ووقت السيرفر',
+                'example' => '2026-05-21 14:00',
+              ],
             ],
           ],
           'EmailFilterItem' => [

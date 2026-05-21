@@ -30,10 +30,6 @@
                 deepLinking: true,
                 persistAuthorization: true,
                 tryItOutEnabled: true,
-                requestInterceptor: (request) => {
-                    request.credentials = 'include';
-                    return request;
-                },
             });
         });
     </script>

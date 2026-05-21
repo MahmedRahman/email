@@ -19,15 +19,16 @@ Route::middleware('guest.demo')->group(function () {
   Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
 });
 
+Route::get('/api/openapi.json', [SwaggerController::class, 'spec'])->name('swagger.spec');
+Route::get('/api/email-filters/information', [EmailFilterApiController::class, 'information'])->name('api.email-filters.information');
+Route::get('/api/email-filters', [EmailFilterApiController::class, 'show'])->name('api.email-filters.show');
+Route::post('/api/email-filters', [EmailFilterApiController::class, 'store'])->name('api.email-filters.store');
+
 Route::middleware('auth.demo')->group(function () {
   Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
   Route::get('/filters', [EmailFiltersController::class, 'index'])->name('filters.index');
   Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
   Route::post('/settings', [SettingsController::class, 'update'])->name('settings.update');
   Route::get('/swagger', [SwaggerController::class, 'index'])->name('swagger.index');
-  Route::get('/api/openapi.json', [SwaggerController::class, 'spec'])->name('swagger.spec');
-  Route::get('/api/email-filters/information', [EmailFilterApiController::class, 'information'])->name('api.email-filters.information');
-  Route::get('/api/email-filters', [EmailFilterApiController::class, 'show'])->name('api.email-filters.show');
-  Route::post('/api/email-filters', [EmailFilterApiController::class, 'store'])->name('api.email-filters.store');
   Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });
