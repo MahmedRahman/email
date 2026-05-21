@@ -33,6 +33,7 @@ Route::middleware('auth.demo')->group(function () {
   Route::delete('/filters/{id}', [EmailFiltersController::class, 'destroy'])->name('filters.destroy');
   Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
   Route::post('/settings', [SettingsController::class, 'update'])->name('settings.update');
+  Route::post('/settings/format-instructions', [SettingsController::class, 'formatInstructions'])->name('settings.format-instructions');
   Route::get('/swagger', [SwaggerController::class, 'index'])->name('swagger.index');
   Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });
