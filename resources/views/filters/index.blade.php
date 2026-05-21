@@ -13,9 +13,20 @@
             <span class="font-medium text-blue-600">{{ count($emails) }}</span>
             رسالة
             <span class="text-slate-300">·</span>
-            بيانات تجريبية
         </div>
     </div>
+
+    @if (session('success'))
+        <div class="mb-6 rounded-xl border border-emerald-100 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if (session('error'))
+        <div class="mb-6 rounded-xl border border-rose-100 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+            {{ session('error') }}
+        </div>
+    @endif
 
     <section class="rounded-2xl border border-slate-100 bg-white shadow-sm">
         <div class="overflow-x-auto">
@@ -28,6 +39,7 @@
                         <th class="whitespace-nowrap px-4 py-3 font-medium text-slate-600 sm:px-6">From</th>
                         <th class="min-w-[12rem] px-4 py-3 font-medium text-slate-600 sm:px-6">Subject</th>
                         <th class="min-w-[16rem] px-4 py-3 font-medium text-slate-600 sm:px-6">snippet</th>
+                        <th class="whitespace-nowrap px-4 py-3 font-medium text-slate-600 sm:px-6">إجراءات</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100">
@@ -45,16 +57,46 @@
                             <td class="max-w-[14rem] truncate px-4 py-4 font-medium text-slate-800 sm:px-6" title="{{ $email['from'] }}">
                                 {{ $email['from'] }}
                             </td>
-                            <td class="px-4 py-4 font-medium text-slate-800 sm:px-6">
-                                {{ $email['subject'] }}
+                            <td class="px-4 py-4 font-medium sm:px-6">
+                                <a
+                                    href="{{ route('filters.show', $email['id']) }}"
+                                    class="text-slate-800 transition-colors hover:text-blue-600"
+                                >
+                                    {{ $email['subject'] }}
+                                </a>
                             </td>
                             <td class="px-4 py-4 text-slate-600 sm:px-6">
                                 <p class="line-clamp-2 max-w-xl text-slate-500">{{ $email['snippet'] }}</p>
                             </td>
+                            <td class="whitespace-nowrap px-4 py-4 sm:px-6">
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <a
+                                        href="{{ route('filters.show', $email['id']) }}"
+                                        class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-50"
+                                    >
+                                        تفاصيل
+                                    </a>
+                                    <form
+                                        method="POST"
+                                        action="{{ route('filters.destroy', $email['id']) }}"
+                                        onsubmit="return confirm('هل تريد حذف هذه الرسالة؟');"
+                                        class="inline"
+                                    >
+                                        @csrf
+                                        @method('DELETE')
+                                        <button
+                                            type="submit"
+                                            class="rounded-lg border border-rose-200 bg-rose-50 px-3 py-1.5 text-xs font-medium text-rose-700 transition-colors hover:bg-rose-100"
+                                        >
+                                            حذف
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="px-6 py-12 text-center text-slate-500">
+                            <td colspan="7" class="px-6 py-12 text-center text-slate-500">
                                 لا توجد رسائل مطابقة للفلاتر حالياً.
                             </td>
                         </tr>

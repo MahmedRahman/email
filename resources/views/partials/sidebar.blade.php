@@ -1,7 +1,7 @@
 @php
     $navItems = [
         ['label' => 'لوحة التحكم', 'icon' => 'dashboard', 'route' => 'dashboard'],
-        ['label' => 'فلاتر البريد', 'icon' => 'filters', 'route' => 'filters.index'],
+        ['label' => 'فلاتر البريد', 'icon' => 'filters', 'route' => 'filters.index', 'route_pattern' => 'filters.'],
         ['label' => 'سير العمل', 'icon' => 'workflows', 'disabled' => true],
         ['label' => 'سجلات الأتمتة', 'icon' => 'logs', 'disabled' => true],
         ['label' => 'الإعدادات', 'icon' => 'settings', 'route' => 'settings.index'],
@@ -37,7 +37,7 @@
                     <span class="mr-auto rounded-md bg-slate-100 px-1.5 py-0.5 text-[10px] font-medium">قريباً</span>
                 </span>
             @else
-                @php($isActive = request()->routeIs($item['route']))
+                @php($isActive = request()->routeIs($item['route']) || request()->routeIs(($item['route_pattern'] ?? $item['route']).'*'))
                 <a
                     href="{{ route($item['route']) }}"
                     @if ($item['new_tab'] ?? false) target="_blank" rel="noopener noreferrer" @endif

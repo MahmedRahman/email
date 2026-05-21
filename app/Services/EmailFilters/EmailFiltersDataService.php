@@ -16,6 +16,13 @@ class EmailFiltersDataService
       ->all();
   }
 
+  public function findById(string $id): ?array
+  {
+    $email = EmailFilter::query()->whereKey($id)->first();
+
+    return $email?->toApiArray();
+  }
+
   public function findByEmailId(string $emailId): ?array
   {
     $email = EmailFilter::query()->where('email_id', $emailId)->first();
@@ -44,5 +51,10 @@ class EmailFiltersDataService
     ]);
 
     return $email->toApiArray();
+  }
+
+  public function deleteById(string $id): bool
+  {
+    return EmailFilter::query()->whereKey($id)->delete() > 0;
   }
 }
