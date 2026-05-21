@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Services\EmailFilters\EmailFiltersDataService;
+use App\Services\EmailFilters\EmailReplyGeneratorService;
 use App\Services\Settings\SettingsDataService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
@@ -12,6 +14,7 @@ class EmailFiltersController extends Controller
   public function __construct(
     private readonly EmailFiltersDataService $emailFiltersData,
     private readonly SettingsDataService $settingsData,
+    private readonly EmailReplyGeneratorService $replyGenerator,
   ) {}
 
   public function index(): View
@@ -35,6 +38,38 @@ class EmailFiltersController extends Controller
       'email' => $email,
       'emailInstructions' => $this->settingsData->getEmailInstructions(),
       'replyInstructions' => $this->settingsData->getReplyInstructions(),
+      'hasDeepSeekApiKey' => $this->settingsData->hasDeepSeekApiKey(),
+    ]);
+  }
+
+  public function generateReplies(string $id): JsonResponse
+  {
+    $email = $this->emailFiltersData->findById($id);
+
+    if ($email === null) {
+      return response()->json([
+        'success' => false,
+        'message' => 'لم يتم العثور على الرسالة.',
+      ]);
+    }
+
+    try {
+      $replies = $this->replyGenerator->generate(
+        $email,
+        $this->settingsData->getReplyInstructions(),
+      );
+    } catch (\Throwable $exception) {
+      return response()->json([
+        'success' => false,
+        'message' => $exception->getMessage(),
+      ]);
+    }
+
+    return response()->json([
+      'success' => true,
+      'data' => [
+        'replies' => $replies,
+      ],
     ]);
   }
 

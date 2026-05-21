@@ -13,7 +13,7 @@ class DeepSeekService
     private readonly SettingsDataService $settingsData,
   ) {}
 
-  public function chat(string $systemPrompt, string $userPrompt): string
+  public function chat(string $systemPrompt, string $userPrompt, float $temperature = 0.3): string
   {
     $apiKey = $this->settingsData->getDeepSeekApiKey();
 
@@ -32,7 +32,7 @@ class DeepSeekService
             ['role' => 'system', 'content' => $systemPrompt],
             ['role' => 'user', 'content' => $userPrompt],
           ],
-          'temperature' => 0.3,
+          'temperature' => $temperature,
         ])
         ->throw();
     } catch (RequestException $exception) {
