@@ -100,6 +100,11 @@ class EmailFiltersDataService
     return EmailFilter::query()->whereKey($id)->delete() > 0;
   }
 
+  public function deleteAll(): int
+  {
+    return EmailFilter::query()->delete();
+  }
+
   private function normalizeStatus(string $status): string
   {
     return $status === EmailFilter::STATUS_REPLIED

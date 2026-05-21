@@ -115,4 +115,19 @@ class EmailFiltersController extends Controller
       ->route('filters.index')
       ->with('success', 'تم حذف الرسالة بنجاح.');
   }
+
+  public function destroyAll(): RedirectResponse
+  {
+    $deleted = $this->emailFiltersData->deleteAll();
+
+    if ($deleted === 0) {
+      return redirect()
+        ->route('filters.index')
+        ->with('error', 'لا توجد رسائل للحذف.');
+    }
+
+    return redirect()
+      ->route('filters.index')
+      ->with('success', "تم حذف {$deleted} رسالة بنجاح.");
+  }
 }
