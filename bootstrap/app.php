@@ -13,6 +13,10 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->trustProxies(at: '*');
 
+        $middleware->preventRequestForgery(except: [
+            'api/*',
+        ]);
+
         $middleware->alias([
             'auth.demo' => \App\Http\Middleware\EnsureAuthenticated::class,
             'guest.demo' => \App\Http\Middleware\RedirectIfAuthenticated::class,
