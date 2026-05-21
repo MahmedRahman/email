@@ -24,6 +24,7 @@ class EmailFilterController extends Controller
       'success' => true,
       'data' => [
         'count' => count($emails),
+        'status_counts' => $this->emailFiltersData->getStatusCounts(),
         'email_instructions' => $this->settingsData->getEmailInstructions(),
         'reply_instructions' => $this->settingsData->getReplyInstructions(),
         'emails' => $emails,

@@ -7,13 +7,41 @@ use Illuminate\Support\Str;
 
 class EmailFiltersDataService
 {
-  public function getEmails(): array
+  /**
+   * @return array<int, array<string, mixed>>
+   */
+  public function getEmails(?string $status = null): array
   {
-    return EmailFilter::query()
-      ->orderByDesc('date')
+    $query = EmailFilter::query()->orderByDesc('date');
+
+    if ($status !== null && $status !== 'all') {
+      $query->where('status', $status);
+    }
+
+    return $query
       ->get()
       ->map(fn (EmailFilter $email) => $email->toApiArray())
       ->all();
+  }
+
+  /**
+   * @return array{all: int, waiting_reply: int, replied: int}
+   */
+  public function getStatusCounts(): array
+  {
+    $counts = EmailFilter::query()
+      ->selectRaw('status, COUNT(*) as total')
+      ->groupBy('status')
+      ->pluck('total', 'status');
+
+    $waiting = (int) ($counts[EmailFilter::STATUS_WAITING_REPLY] ?? 0);
+    $replied = (int) ($counts[EmailFilter::STATUS_REPLIED] ?? 0);
+
+    return [
+      'all' => $waiting + $replied,
+      'waiting_reply' => $waiting,
+      'replied' => $replied,
+    ];
   }
 
   public function findById(string $id): ?array
@@ -31,7 +59,7 @@ class EmailFiltersDataService
   }
 
   /**
-   * @param  array{email_id: string, from: string, subject: string, snippet?: string|null, date?: string|null}  $data
+   * @param  array{email_id: string, from: string, subject: string, snippet?: string|null, date?: string|null, status?: string|null}  $data
    */
   public function store(array $data): ?array
   {
@@ -48,13 +76,34 @@ class EmailFiltersDataService
       'date' => filled($data['date'] ?? null)
         ? trim((string) $data['date'])
         : now()->format('Y-m-d H:i'),
+      'status' => $this->normalizeStatus($data['status'] ?? EmailFilter::STATUS_WAITING_REPLY),
     ]);
 
     return $email->toApiArray();
   }
 
+  public function updateStatus(string $id, string $status): bool
+  {
+    $email = EmailFilter::query()->whereKey($id)->first();
+
+    if ($email === null) {
+      return false;
+    }
+
+    $email->update(['status' => $this->normalizeStatus($status)]);
+
+    return true;
+  }
+
   public function deleteById(string $id): bool
   {
     return EmailFilter::query()->whereKey($id)->delete() > 0;
+  }
+
+  private function normalizeStatus(string $status): string
+  {
+    return $status === EmailFilter::STATUS_REPLIED
+      ? EmailFilter::STATUS_REPLIED
+      : EmailFilter::STATUS_WAITING_REPLY;
   }
 }

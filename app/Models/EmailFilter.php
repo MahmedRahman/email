@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class EmailFilter extends Model
 {
+  public const STATUS_WAITING_REPLY = 'waiting_reply';
+
+  public const STATUS_REPLIED = 'replied';
+
   public $incrementing = false;
 
   protected $keyType = 'string';
@@ -17,6 +21,7 @@ class EmailFilter extends Model
     'subject',
     'snippet',
     'date',
+    'status',
   ];
 
   public function toApiArray(): array
@@ -28,6 +33,7 @@ class EmailFilter extends Model
       'subject' => $this->subject,
       'snippet' => $this->snippet ?? '',
       'date' => $this->date,
+      'status' => $this->status,
     ];
   }
 }

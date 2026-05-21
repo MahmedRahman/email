@@ -7,13 +7,8 @@
     <div class="mb-6 rounded-2xl border border-slate-100 bg-white p-6 shadow-sm sm:p-8">
         <h2 class="text-xl font-bold text-slate-800 sm:text-2xl">فلاتر البريد</h2>
         <p class="mt-2 max-w-2xl text-sm leading-relaxed text-slate-600">
-            قائمة الرسائل المطابقة للفلاتر النشطة. الأعمدة تعكس بيانات Gmail: المعرف، التاريخ، EmailId، المرسل، الموضوع، والمقتطف.
+            قائمة الرسائل المطابقة للفلاتر النشطة مع حالة الرد: تم الرد أو في انتظار الرد.
         </p>
-        <div class="mt-4 inline-flex items-center gap-2 rounded-xl bg-slate-50 px-3 py-2 text-xs text-slate-500 ring-1 ring-slate-100">
-            <span class="font-medium text-blue-600">{{ count($emails) }}</span>
-            رسالة
-            <span class="text-slate-300">·</span>
-        </div>
     </div>
 
     @if (session('success'))
@@ -28,12 +23,43 @@
         </div>
     @endif
 
+    <div class="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
+        @php
+            $filters = [
+                ['key' => 'all', 'label' => 'الكل', 'count' => $statusCounts['all'], 'activeClasses' => 'border-blue-200 bg-blue-50 ring-blue-100', 'countColor' => 'text-blue-700'],
+                ['key' => 'waiting_reply', 'label' => 'في انتظار الرد', 'count' => $statusCounts['waiting_reply'], 'activeClasses' => 'border-amber-200 bg-amber-50 ring-amber-100', 'countColor' => 'text-amber-700'],
+                ['key' => 'replied', 'label' => 'تم الرد', 'count' => $statusCounts['replied'], 'activeClasses' => 'border-emerald-200 bg-emerald-50 ring-emerald-100', 'countColor' => 'text-emerald-700'],
+            ];
+        @endphp
+
+        @foreach ($filters as $filter)
+            @php
+                $isActive = $activeStatus === $filter['key'];
+                $href = $filter['key'] === 'all'
+                    ? route('filters.index')
+                    : route('filters.index', ['status' => $filter['key']]);
+            @endphp
+            <a
+                href="{{ $href }}"
+                @class([
+                    'rounded-2xl border p-4 shadow-sm transition-all ring-1',
+                    $filter['activeClasses'] => $isActive,
+                    'border-slate-100 bg-white ring-slate-100 hover:border-slate-200 hover:bg-slate-50' => ! $isActive,
+                ])
+            >
+                <p class="text-sm font-medium text-slate-600">{{ $filter['label'] }}</p>
+                <p @class(['mt-2 text-2xl font-bold', $filter['countColor']])>{{ $filter['count'] }}</p>
+                <p class="mt-1 text-xs text-slate-400">رسالة</p>
+            </a>
+        @endforeach
+    </div>
+
     <section class="rounded-2xl border border-slate-100 bg-white shadow-sm">
         <div class="overflow-x-auto">
             <table class="min-w-full text-sm">
                 <thead>
                     <tr class="border-b border-slate-100 bg-slate-50/80 text-right">
-                        <th class="whitespace-nowrap px-4 py-3 font-medium text-slate-600 sm:px-6">id</th>
+                        <th class="whitespace-nowrap px-4 py-3 font-medium text-slate-600 sm:px-6">الحالة</th>
                         <th class="whitespace-nowrap px-4 py-3 font-medium text-slate-600 sm:px-6">التاريخ</th>
                         <th class="whitespace-nowrap px-4 py-3 font-medium text-slate-600 sm:px-6">EmailId</th>
                         <th class="whitespace-nowrap px-4 py-3 font-medium text-slate-600 sm:px-6">From</th>
@@ -45,8 +71,8 @@
                 <tbody class="divide-y divide-slate-100">
                     @forelse ($emails as $email)
                         <tr class="align-top transition-colors hover:bg-slate-50/50">
-                            <td class="px-4 py-4 sm:px-6">
-                                <code class="rounded-md bg-slate-100 px-2 py-1 text-xs text-slate-600" dir="ltr">{{ $email['id'] }}</code>
+                            <td class="whitespace-nowrap px-4 py-4 sm:px-6">
+                                <x-email-filter-status-badge :status="$email['status']" />
                             </td>
                             <td class="whitespace-nowrap px-4 py-4 text-slate-500 sm:px-6" dir="ltr">
                                 {{ $email['date'] }}
@@ -76,6 +102,23 @@
                                     >
                                         تفاصيل
                                     </a>
+                                    @if ($email['status'] === 'waiting_reply')
+                                        <form method="POST" action="{{ route('filters.update-status', $email['id']) }}" class="inline">
+                                            @csrf
+                                            <input type="hidden" name="status" value="replied">
+                                            <button type="submit" class="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-xs font-medium text-emerald-700 hover:bg-emerald-100">
+                                                تم الرد
+                                            </button>
+                                        </form>
+                                    @else
+                                        <form method="POST" action="{{ route('filters.update-status', $email['id']) }}" class="inline">
+                                            @csrf
+                                            <input type="hidden" name="status" value="waiting_reply">
+                                            <button type="submit" class="rounded-lg border border-amber-200 bg-amber-50 px-3 py-1.5 text-xs font-medium text-amber-700 hover:bg-amber-100">
+                                                انتظار الرد
+                                            </button>
+                                        </form>
+                                    @endif
                                     <form
                                         method="POST"
                                         action="{{ route('filters.destroy', $email['id']) }}"
@@ -97,7 +140,13 @@
                     @empty
                         <tr>
                             <td colspan="7" class="px-6 py-12 text-center text-slate-500">
-                                لا توجد رسائل مطابقة للفلاتر حالياً.
+                                @if ($activeStatus === 'waiting_reply')
+                                    لا توجد رسائل في انتظار الرد.
+                                @elseif ($activeStatus === 'replied')
+                                    لا توجد رسائل تم الرد عليها.
+                                @else
+                                    لا توجد رسائل مطابقة للفلاتر حالياً.
+                                @endif
                             </td>
                         </tr>
                     @endforelse

@@ -30,6 +30,7 @@ Route::middleware('auth.demo')->group(function () {
   Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
   Route::get('/filters', [EmailFiltersController::class, 'index'])->name('filters.index');
   Route::get('/filters/{id}', [EmailFiltersController::class, 'show'])->name('filters.show');
+  Route::post('/filters/{id}/status', [EmailFiltersController::class, 'updateStatus'])->name('filters.update-status');
   Route::post('/filters/{id}/generate-replies', [EmailFiltersController::class, 'generateReplies'])->name('filters.generate-replies');
   Route::delete('/filters/{id}', [EmailFiltersController::class, 'destroy'])->name('filters.destroy');
   Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');

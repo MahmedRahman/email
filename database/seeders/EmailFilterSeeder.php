@@ -17,6 +17,7 @@ class EmailFilterSeeder extends Seeder
         'subject' => 'فاتورة شهر مايو — تم الدفع',
         'snippet' => 'تم استلام دفعتك بنجاح. يمكنك تحميل الفاتورة من لوحة التحكم...',
         'date' => '2026-05-21 09:42',
+        'status' => EmailFilter::STATUS_REPLIED,
       ],
       [
         'id' => '18f2e8910a1b2c3d',
@@ -25,6 +26,7 @@ class EmailFilterSeeder extends Seeder
         'subject' => '[Email_Filter] Pull request merged',
         'snippet' => 'Your pull request #12 was merged into main by mohamed...',
         'date' => '2026-05-20 18:15',
+        'status' => EmailFilter::STATUS_WAITING_REPLY,
       ],
       [
         'id' => '18f1d44556677889',
@@ -33,6 +35,7 @@ class EmailFilterSeeder extends Seeder
         'subject' => 'أفضل 5 مقالات عن الأتمتة هذا الأسبوع',
         'snippet' => 'اكتشف كيف تربط n8n مع Gmail لبناء فلاتر ذكية...',
         'date' => '2026-05-20 08:00',
+        'status' => EmailFilter::STATUS_REPLIED,
       ],
       [
         'id' => '18f0abc123456789',
@@ -41,6 +44,7 @@ class EmailFilterSeeder extends Seeder
         'subject' => 'تذكير: اجتماع الفريق غداً',
         'snippet' => 'مرحباً، نذكّرك باجتماع الفريق الأسبوعي الساعة 10 صباحاً...',
         'date' => '2026-05-19 14:30',
+        'status' => EmailFilter::STATUS_WAITING_REPLY,
       ],
       [
         'id' => '18ef9876543210ab',
@@ -49,6 +53,7 @@ class EmailFilterSeeder extends Seeder
         'subject' => 'Workflow execution failed',
         'snippet' => 'Workflow "تنبيه البريد العاجل" failed at node Gmail Trigger...',
         'date' => '2026-05-19 11:02',
+        'status' => EmailFilter::STATUS_WAITING_REPLY,
       ],
       [
         'id' => '18ee112233445566',
@@ -57,6 +62,7 @@ class EmailFilterSeeder extends Seeder
         'subject' => 'تم شحن طلبك #4021-8834',
         'snippet' => 'طلبك في الطريق. التسليم المتوقع يوم الأحد...',
         'date' => '2026-05-18 16:45',
+        'status' => EmailFilter::STATUS_REPLIED,
       ],
     ];
 

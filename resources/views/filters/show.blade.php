@@ -24,9 +24,27 @@
                 <p class="mt-2 text-sm text-slate-500" dir="ltr">{{ $email['from'] }}</p>
             </div>
             <div class="flex shrink-0 flex-wrap items-center gap-2">
+                <x-email-filter-status-badge :status="$email['status']" />
                 <span class="rounded-xl bg-slate-50 px-3 py-1.5 text-xs text-slate-600 ring-1 ring-slate-100" dir="ltr">
                     {{ $email['date'] }}
                 </span>
+                @if ($email['status'] === 'waiting_reply')
+                    <form method="POST" action="{{ route('filters.update-status', $email['id']) }}" class="inline">
+                        @csrf
+                        <input type="hidden" name="status" value="replied">
+                        <button type="submit" class="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-xs font-medium text-emerald-700 hover:bg-emerald-100">
+                            تم الرد
+                        </button>
+                    </form>
+                @else
+                    <form method="POST" action="{{ route('filters.update-status', $email['id']) }}" class="inline">
+                        @csrf
+                        <input type="hidden" name="status" value="waiting_reply">
+                        <button type="submit" class="rounded-lg border border-amber-200 bg-amber-50 px-3 py-1.5 text-xs font-medium text-amber-700 hover:bg-amber-100">
+                            انتظار الرد
+                        </button>
+                    </form>
+                @endif
                 <button
                     type="button"
                     id="generate-replies-btn"
