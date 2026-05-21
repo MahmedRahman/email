@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EmailFiltersController;
 use App\Http\Controllers\Api\EmailFilterController as EmailFilterApiController;
+use App\Http\Controllers\Api\SettingsController as SettingsApiController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\SwaggerController;
 use Illuminate\Support\Facades\Route;
@@ -23,6 +24,7 @@ Route::get('/api/openapi.json', [SwaggerController::class, 'spec'])->name('swagg
 Route::get('/api/email-filters/information', [EmailFilterApiController::class, 'information'])->name('api.email-filters.information');
 Route::get('/api/email-filters', [EmailFilterApiController::class, 'show'])->name('api.email-filters.show');
 Route::post('/api/email-filters', [EmailFilterApiController::class, 'store'])->name('api.email-filters.store');
+Route::get('/api/settings', [SettingsApiController::class, 'show'])->name('api.settings.show');
 
 Route::middleware('auth.demo')->group(function () {
   Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');

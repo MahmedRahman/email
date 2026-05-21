@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Database\Seeders\EmailFilterSeeder;
+use Database\Seeders\SettingsSeeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -23,6 +24,9 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
 
-        $this->call(EmailFilterSeeder::class);
+        $this->call([
+            EmailFilterSeeder::class,
+            SettingsSeeder::class,
+        ]);
     }
 }

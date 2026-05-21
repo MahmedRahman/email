@@ -10,13 +10,37 @@ class OpenApiSpec
       'openapi' => '3.0.3',
       'info' => [
         'title' => 'Email Filter API',
-        'description' => 'واجهة برمجة مساعد البريد — فلاتر البريد. لا يتطلب تسجيل دخول.',
+        'description' => 'واجهة برمجة مساعد البريد — فلاتر البريد والإعدادات. لا يتطلب تسجيل دخول.',
         'version' => '1.0.0',
       ],
       'servers' => [
         ['url' => '/', 'description' => 'التطبيق الحالي'],
       ],
       'paths' => [
+        '/api/settings' => [
+          'get' => [
+            'tags' => ['Settings'],
+            'summary' => 'Get application settings',
+            'description' => 'يعيد إعدادات مساعد البريد (نفس بيانات صفحة /settings).',
+            'operationId' => 'getSettings',
+            'responses' => [
+              '200' => [
+                'description' => 'الاستجابة دائماً HTTP 200',
+                'content' => [
+                  'application/json' => [
+                    'schema' => [
+                      'type' => 'object',
+                      'properties' => [
+                        'success' => ['type' => 'boolean', 'example' => true],
+                        'data' => ['$ref' => '#/components/schemas/SettingsData'],
+                      ],
+                    ],
+                  ],
+                ],
+              ],
+            ],
+          ],
+        ],
         '/api/email-filters/information' => [
           'get' => [
             'tags' => ['Email Filters'],
@@ -143,6 +167,15 @@ class OpenApiSpec
       ],
       'components' => [
         'schemas' => [
+          'SettingsData' => [
+            'type' => 'object',
+            'properties' => [
+              'email_instructions' => [
+                'type' => 'string',
+                'description' => 'تعليمات تصنيف ومعالجة البريد',
+              ],
+            ],
+          ],
           'EmailFilterCreateInput' => [
             'type' => 'object',
             'required' => ['email_id', 'from', 'subject'],

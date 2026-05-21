@@ -48,7 +48,7 @@
                 >
                     حفظ الإعدادات
                 </button>
-                <p class="text-xs text-slate-400">يُحفظ محلياً في الجلسة (مرحلة تجريبية)</p>
+                <p class="text-xs text-slate-400">يُحفظ في قاعدة البيانات ويُعرض عبر API</p>
             </div>
         </form>
     </section>
