@@ -26,6 +26,7 @@ Route::get('/api/email-filters/pending-replies', [EmailFilterApiController::clas
 Route::get('/api/email-filters', [EmailFilterApiController::class, 'show'])->name('api.email-filters.show');
 Route::post('/api/email-filters', [EmailFilterApiController::class, 'store'])->name('api.email-filters.store');
 Route::post('/api/email-filters/mark-replied', [EmailFilterApiController::class, 'markReplied'])->name('api.email-filters.mark-replied');
+Route::post('/api/email-filters/update-status', [EmailFilterApiController::class, 'updateStatus'])->name('api.email-filters.update-status');
 Route::post('/api/email-filters/suggested-replies', [EmailFilterApiController::class, 'suggestedReplies'])->name('api.email-filters.suggested-replies');
 Route::get('/api/settings', [SettingsApiController::class, 'show'])->name('api.settings.show');
 

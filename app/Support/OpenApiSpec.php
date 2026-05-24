@@ -98,11 +98,69 @@ class OpenApiSpec
             ],
           ],
         ],
+        '/api/email-filters/update-status' => [
+          'post' => [
+            'tags' => ['Email Filters'],
+            'summary' => 'Update email status',
+            'description' => 'يغيّر حالة الرسالة باستخدام id (EmailId) و status.',
+            'operationId' => 'updateEmailFilterStatus',
+            'requestBody' => [
+              'required' => true,
+              'content' => [
+                'application/json' => [
+                  'schema' => [
+                    'type' => 'object',
+                    'required' => ['id', 'status'],
+                    'properties' => [
+                      'id' => [
+                        'type' => 'string',
+                        'description' => 'معرف الرسالة (EmailId)',
+                        'example' => 'msg-10042',
+                      ],
+                      'status' => [
+                        'type' => 'string',
+                        'enum' => ['waiting_reply', 'replied', 'ignored'],
+                        'example' => 'replied',
+                        'description' => 'في انتظار الرد | تم الرد | تجاهل',
+                      ],
+                    ],
+                  ],
+                ],
+              ],
+            ],
+            'responses' => [
+              '200' => [
+                'description' => 'الاستجابة دائماً HTTP 200',
+                'content' => [
+                  'application/json' => [
+                    'schema' => [
+                      'oneOf' => [
+                        [
+                          'type' => 'object',
+                          'properties' => [
+                            'success' => ['type' => 'boolean', 'example' => true],
+                            'data' => [
+                              'type' => 'object',
+                              'properties' => [
+                                'email' => ['$ref' => '#/components/schemas/EmailFilterItem'],
+                              ],
+                            ],
+                          ],
+                        ],
+                        ['$ref' => '#/components/schemas/ErrorResponse'],
+                      ],
+                    ],
+                  ],
+                ],
+              ],
+            ],
+          ],
+        ],
         '/api/email-filters/mark-replied' => [
           'post' => [
             'tags' => ['Email Filters'],
             'summary' => 'Mark email as replied',
-            'description' => 'يغيّر حالة الرسالة إلى replied (تم الرد) باستخدام id (EmailId).',
+            'description' => 'يغيّر حالة الرسالة إلى replied (تم الرد) باستخدام id (EmailId). اختصار لـ update-status.',
             'operationId' => 'markEmailReplied',
             'requestBody' => [
               'required' => true,

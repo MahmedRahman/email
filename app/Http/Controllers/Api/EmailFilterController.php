@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MarkEmailRepliedRequest;
+use App\Http\Requests\UpdateEmailFilterStatusRequest;
 use App\Http\Requests\StoreEmailFilterRequest;
 use App\Http\Requests\SuggestedRepliesRequest;
 use App\Models\EmailFilter;
@@ -73,10 +74,23 @@ class EmailFilterController extends Controller
 
   public function markReplied(MarkEmailRepliedRequest $request): JsonResponse
   {
-    $email = $this->emailFiltersData->updateStatusByEmailId(
+    return $this->updateStatusResponse(
       $request->validated('id'),
       EmailFilter::STATUS_REPLIED,
     );
+  }
+
+  public function updateStatus(UpdateEmailFilterStatusRequest $request): JsonResponse
+  {
+    return $this->updateStatusResponse(
+      $request->validated('id'),
+      $request->validated('status'),
+    );
+  }
+
+  private function updateStatusResponse(string $emailId, string $status): JsonResponse
+  {
+    $email = $this->emailFiltersData->updateStatusByEmailId($emailId, $status);
 
     if ($email === null) {
       return response()->json([

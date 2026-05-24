@@ -12,6 +12,7 @@
             <code class="rounded bg-slate-100 px-1.5 py-0.5 text-xs" dir="ltr">GET /api/email-filters/pending-replies</code>،
             <code class="rounded bg-slate-100 px-1.5 py-0.5 text-xs" dir="ltr">GET /api/email-filters?id=...</code>،
             <code class="rounded bg-slate-100 px-1.5 py-0.5 text-xs" dir="ltr">POST /api/email-filters</code>،
+            <code class="rounded bg-slate-100 px-1.5 py-0.5 text-xs" dir="ltr">POST /api/email-filters/update-status</code>،
             <code class="rounded bg-slate-100 px-1.5 py-0.5 text-xs" dir="ltr">POST /api/email-filters/mark-replied</code>،
             <code class="rounded bg-slate-100 px-1.5 py-0.5 text-xs" dir="ltr">POST /api/email-filters/suggested-replies</code>،
             <code class="rounded bg-slate-100 px-1.5 py-0.5 text-xs" dir="ltr">GET /api/settings</code>
