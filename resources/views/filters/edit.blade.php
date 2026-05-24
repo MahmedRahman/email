@@ -121,27 +121,56 @@
                 </div>
 
                 @php
-                    $statusLabels = [
-                        'waiting_reply' => 'في انتظار الرد',
-                        'replied' => 'تم الرد',
-                        'ignored' => 'تجاهل',
+                    $selectedStatus = old('status', $email['status']);
+                    $statusCards = [
+                        [
+                            'value' => 'waiting_reply',
+                            'label' => 'في انتظار الرد',
+                            'hint' => 'الرسالة تحتاج متابعة ورد',
+                            'active' => 'peer-checked:border-amber-200 peer-checked:bg-amber-50 peer-checked:ring-amber-100 peer-checked:text-amber-800',
+                        ],
+                        [
+                            'value' => 'replied',
+                            'label' => 'تم الرد',
+                            'hint' => 'تم الرد على الرسالة',
+                            'active' => 'peer-checked:border-emerald-200 peer-checked:bg-emerald-50 peer-checked:ring-emerald-100 peer-checked:text-emerald-800',
+                        ],
+                        [
+                            'value' => 'ignored',
+                            'label' => 'تجاهل',
+                            'hint' => 'لا حاجة للرد أو المتابعة',
+                            'active' => 'peer-checked:border-slate-300 peer-checked:bg-slate-100 peer-checked:ring-slate-200 peer-checked:text-slate-800',
+                        ],
                     ];
                 @endphp
                 <div>
-                    <label for="status" class="mb-1.5 block text-sm font-semibold text-slate-800">
-                        الحالة
-                    </label>
-                    <select
-                        id="status"
-                        name="status"
-                        class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition-shadow focus:border-blue-400 focus:ring-4 focus:ring-blue-100 @error('status') border-rose-300 focus:border-rose-400 focus:ring-rose-100 @enderror"
+                    <p class="mb-1.5 text-sm font-semibold text-slate-800">الحالة</p>
+                    <p class="mb-3 text-sm text-slate-500">اختر حالة الرسالة بالنقر على البطاقة المناسبة.</p>
+                    <div
+                        class="grid grid-cols-1 gap-3 sm:grid-cols-3 @error('status') rounded-2xl ring-2 ring-rose-200 @enderror"
+                        role="radiogroup"
+                        aria-label="حالة الرسالة"
                     >
-                        @foreach (\App\Models\EmailFilter::statuses() as $statusValue)
-                            <option value="{{ $statusValue }}" @selected(old('status', $email['status']) === $statusValue)>
-                                {{ $statusLabels[$statusValue] ?? $statusValue }}
-                            </option>
+                        @foreach ($statusCards as $card)
+                            <label class="block cursor-pointer">
+                                <input
+                                    type="radio"
+                                    name="status"
+                                    value="{{ $card['value'] }}"
+                                    class="peer sr-only"
+                                    @checked($selectedStatus === $card['value'])
+                                    required
+                                >
+                                <div @class([
+                                    'rounded-2xl border border-slate-100 bg-white p-4 shadow-sm ring-1 ring-slate-100 transition-all hover:border-slate-200 hover:bg-slate-50',
+                                    $card['active'],
+                                ])>
+                                    <p class="text-sm font-semibold text-slate-700">{{ $card['label'] }}</p>
+                                    <p class="mt-1.5 text-xs leading-relaxed text-slate-500">{{ $card['hint'] }}</p>
+                                </div>
+                            </label>
                         @endforeach
-                    </select>
+                    </div>
                     @error('status')
                         <p class="mt-2 text-sm text-rose-600">{{ $message }}</p>
                     @enderror
