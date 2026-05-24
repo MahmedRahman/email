@@ -15,6 +15,11 @@ class SettingsSeeder extends Seeder
     );
 
     Setting::query()->updateOrCreate(
+      ['key' => 'email_instructions_enabled'],
+      ['value' => '1'],
+    );
+
+    Setting::query()->updateOrCreate(
       ['key' => 'reply_instructions'],
       ['value' => (string) config('demo.reply_instructions', '')],
     );

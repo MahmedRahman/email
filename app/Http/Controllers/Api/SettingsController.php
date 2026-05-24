@@ -17,6 +17,7 @@ class SettingsController extends Controller
     return response()->json([
       'success' => true,
       'data' => [
+        'email_instructions_enabled' => $this->settingsData->getEmailInstructionsEnabled(),
         'email_instructions' => $this->settingsData->getEmailInstructions(),
         'reply_instructions' => $this->settingsData->getReplyInstructions(),
       ],

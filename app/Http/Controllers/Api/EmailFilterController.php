@@ -30,6 +30,7 @@ class EmailFilterController extends Controller
       'data' => [
         'count' => count($emails),
         'status_counts' => $this->emailFiltersData->getStatusCounts(),
+        'email_instructions_enabled' => $this->settingsData->getEmailInstructionsEnabled(),
         'email_instructions' => $this->settingsData->getEmailInstructions(),
         'reply_instructions' => $this->settingsData->getReplyInstructions(),
         'emails' => $emails,
@@ -150,6 +151,7 @@ class EmailFilterController extends Controller
       'success' => true,
       'data' => [
         'email' => $email,
+        'email_instructions_enabled' => $this->settingsData->getEmailInstructionsEnabled(),
         'email_instructions' => $this->settingsData->getEmailInstructions(),
         'reply_instructions' => $this->settingsData->getReplyInstructions(),
       ],

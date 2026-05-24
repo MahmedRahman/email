@@ -9,6 +9,8 @@ class SettingsDataService
 {
   private const EMAIL_INSTRUCTIONS_KEY = 'email_instructions';
 
+  private const EMAIL_INSTRUCTIONS_ENABLED_KEY = 'email_instructions_enabled';
+
   private const REPLY_INSTRUCTIONS_KEY = 'reply_instructions';
 
   private const DEEPSEEK_API_KEY = 'deepseek_api_key';
@@ -21,6 +23,24 @@ class SettingsDataService
   public function saveEmailInstructions(string $instructions): void
   {
     $this->saveSetting(self::EMAIL_INSTRUCTIONS_KEY, $instructions);
+  }
+
+  public function getEmailInstructionsEnabled(): bool
+  {
+    $stored = Setting::query()
+      ->where('key', self::EMAIL_INSTRUCTIONS_ENABLED_KEY)
+      ->value('value');
+
+    if ($stored === null) {
+      return true;
+    }
+
+    return filter_var($stored, FILTER_VALIDATE_BOOLEAN);
+  }
+
+  public function saveEmailInstructionsEnabled(bool $enabled): void
+  {
+    $this->saveSetting(self::EMAIL_INSTRUCTIONS_ENABLED_KEY, $enabled ? '1' : '0');
   }
 
   public function getReplyInstructions(): string

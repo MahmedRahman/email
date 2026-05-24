@@ -214,6 +214,7 @@ class OpenApiSpec
                                     'replied' => ['type' => 'integer', 'example' => 3],
                                   ],
                                 ],
+                                'email_instructions_enabled' => ['type' => 'boolean', 'example' => true],
                                 'email_instructions' => ['type' => 'string'],
                                 'reply_instructions' => ['type' => 'string'],
                                 'emails' => [
@@ -303,6 +304,7 @@ class OpenApiSpec
                               'type' => 'object',
                               'properties' => [
                                 'email' => ['$ref' => '#/components/schemas/EmailFilterItem'],
+                                'email_instructions_enabled' => ['type' => 'boolean', 'example' => true],
                                 'email_instructions' => ['type' => 'string'],
                                 'reply_instructions' => ['type' => 'string'],
                               ],
@@ -324,6 +326,10 @@ class OpenApiSpec
           'SettingsData' => [
             'type' => 'object',
             'properties' => [
+              'email_instructions_enabled' => [
+                'type' => 'boolean',
+                'description' => 'تفعيل أو تعطيل استخدام تعليمات البريد داخل الـ workflow',
+              ],
               'email_instructions' => [
                 'type' => 'string',
                 'description' => 'تعليمات تصنيف ومعالجة البريد',

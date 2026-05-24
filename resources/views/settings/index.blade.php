@@ -66,6 +66,16 @@
                 <p class="mb-3 text-sm text-slate-500">
                     اكتب التعليمات التي يجب على النظام اتباعها عند تصنيف ومعالجة البريد الوارد.
                 </p>
+                <label class="mb-4 inline-flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700">
+                    <input
+                        type="checkbox"
+                        name="email_instructions_enabled"
+                        value="1"
+                        class="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                        @checked(old('email_instructions_enabled', $emailInstructionsEnabled))
+                    >
+                    <span>تفعيل استخدام Email instructions في الـ workflow</span>
+                </label>
                 <textarea
                     id="email_instructions"
                     name="email_instructions"

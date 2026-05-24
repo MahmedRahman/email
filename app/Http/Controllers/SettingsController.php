@@ -21,6 +21,7 @@ class SettingsController extends Controller
   {
     return view('settings.index', [
       'emailInstructions' => $this->settingsData->getEmailInstructions(),
+      'emailInstructionsEnabled' => $this->settingsData->getEmailInstructionsEnabled(),
       'replyInstructions' => $this->settingsData->getReplyInstructions(),
       'hasDeepSeekApiKey' => $this->settingsData->hasDeepSeekApiKey(),
     ]);
@@ -55,6 +56,7 @@ class SettingsController extends Controller
   public function update(UpdateSettingsRequest $request): RedirectResponse
   {
     $this->settingsData->saveEmailInstructions($request->validated('email_instructions'));
+    $this->settingsData->saveEmailInstructionsEnabled($request->boolean('email_instructions_enabled'));
     $this->settingsData->saveReplyInstructions($request->validated('reply_instructions'));
 
     if ($request->filled('deepseek_api_key')) {
