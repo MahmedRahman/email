@@ -212,7 +212,7 @@ class OpenApiSpec
           'get' => [
             'tags' => ['Email Filters'],
             'summary' => 'Get emails awaiting reply',
-            'description' => 'يعيد الرسائل التي حالتها waiting_reply (في انتظار الرد).',
+            'description' => 'Returns emails with status waiting_reply.',
             'operationId' => 'getPendingReplyEmails',
             'responses' => [
               '200' => [
@@ -246,11 +246,11 @@ class OpenApiSpec
           'get' => [
             'tags' => ['Email Filters'],
             'summary' => 'Get email filter information',
-            'description' => 'يعيد قائمة الرسائل المطابقة للفلاتر مع العدد وتعليمات البريد من الإعدادات.',
+            'description' => 'Returns filtered emails with counts and email instructions from settings.',
             'operationId' => 'getEmailFilterInformation',
             'responses' => [
               '200' => [
-                'description' => 'الاستجابة دائماً HTTP 200 — النجاح أو الفشل يُحدَّد عبر success في الجسم',
+                'description' => 'Always returns HTTP 200 — success or failure is indicated by the success field in the body',
                 'content' => [
                   'application/json' => [
                     'schema' => [
@@ -296,7 +296,7 @@ class OpenApiSpec
           'post' => [
             'tags' => ['Email Filters'],
             'summary' => 'Register email filter',
-            'description' => 'تسجيل بيانات رسالة بريد جديدة. الحقل date اختياري — إن لم يُرسل يُستخدم تاريخ ووقت السيرفر.',
+            'description' => 'Registers a new email. The date field is optional — server date/time is used if omitted.',
             'operationId' => 'storeEmailFilter',
             'requestBody' => [
               'required' => true,
@@ -308,7 +308,7 @@ class OpenApiSpec
             ],
             'responses' => [
               '200' => [
-                'description' => 'الاستجابة دائماً HTTP 200 — النجاح أو الفشل يُحدَّد عبر success في الجسم',
+                'description' => 'Always returns HTTP 200 — success or failure is indicated by the success field in the body',
                 'content' => [
                   'application/json' => [
                     'schema' => [
@@ -336,20 +336,20 @@ class OpenApiSpec
           'get' => [
             'tags' => ['Email Filters'],
             'summary' => 'Get email filter by id',
-            'description' => 'يعيد رسالة واحدة مطابقة لمعرف id المُمرَّر في Query Parameters.',
+            'description' => 'Returns a single email matching the id query parameter.',
             'operationId' => 'getEmailFilterById',
             'parameters' => [
               [
                 'name' => 'id',
                 'in' => 'query',
                 'required' => true,
-                'description' => 'معرف الرسالة (EmailId)',
+                'description' => 'Email message ID (EmailId)',
                 'schema' => ['type' => 'string', 'example' => 'msg-10042'],
               ],
             ],
             'responses' => [
               '200' => [
-                'description' => 'الاستجابة دائماً HTTP 200 — النجاح أو الفشل يُحدَّد عبر success في الجسم',
+                'description' => 'Always returns HTTP 200 — success or failure is indicated by the success field in the body',
                 'content' => [
                   'application/json' => [
                     'schema' => [
@@ -386,23 +386,23 @@ class OpenApiSpec
             'properties' => [
               'email_instructions_enabled' => [
                 'type' => 'boolean',
-                'description' => 'تفعيل أو تعطيل استخدام تعليمات البريد داخل الـ workflow',
+                'description' => 'Enable or disable email instructions in the workflow',
               ],
               'email_instructions' => [
                 'type' => 'string',
-                'description' => 'تعليمات تصنيف ومعالجة البريد',
+                'description' => 'Instructions for classifying and processing email',
               ],
               'reply_instructions' => [
                 'type' => 'string',
-                'description' => 'تعليمات صياغة الرد على البريد',
+                'description' => 'Instructions for drafting email replies',
               ],
             ],
           ],
           'SuggestedReplyItem' => [
             'type' => 'object',
             'properties' => [
-              'title' => ['type' => 'string', 'example' => 'رد رسمي'],
-              'body' => ['type' => 'string', 'example' => 'مرحباً، شكراً لتواصلك...'],
+              'title' => ['type' => 'string', 'example' => 'Formal reply'],
+              'body' => ['type' => 'string', 'example' => 'Hello, thank you for reaching out...'],
             ],
           ],
           'EmailFilterCreateInput' => [
@@ -411,11 +411,11 @@ class OpenApiSpec
             'properties' => [
               'email_id' => ['type' => 'string', 'example' => 'msg-10043'],
               'from' => ['type' => 'string', 'example' => 'client@example.com'],
-              'subject' => ['type' => 'string', 'example' => 'طلب عرض سعر'],
-              'snippet' => ['type' => 'string', 'example' => 'نرجو إرسال عرض السعر خلال 48 ساعة...'],
+              'subject' => ['type' => 'string', 'example' => 'Quote request'],
+              'snippet' => ['type' => 'string', 'example' => 'Please send a quote within 48 hours...'],
               'date' => [
                 'type' => 'string',
-                'description' => 'اختياري — إن تُرك فارغاً يُستخدم تاريخ ووقت السيرفر',
+                'description' => 'Optional — server date/time is used if empty',
                 'example' => '2026-05-21 14:00',
               ],
             ],
@@ -433,7 +433,7 @@ class OpenApiSpec
                 'type' => 'string',
                 'enum' => ['waiting_reply', 'replied', 'ignored'],
                 'example' => 'waiting_reply',
-                'description' => 'في انتظار الرد | تم الرد | تجاهل',
+                'description' => 'waiting_reply | replied | ignored',
               ],
             ],
           ],
