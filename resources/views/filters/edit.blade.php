@@ -120,6 +120,13 @@
                     @enderror
                 </div>
 
+                @php
+                    $statusLabels = [
+                        'waiting_reply' => 'في انتظار الرد',
+                        'replied' => 'تم الرد',
+                        'ignored' => 'تجاهل',
+                    ];
+                @endphp
                 <div>
                     <label for="status" class="mb-1.5 block text-sm font-semibold text-slate-800">
                         الحالة
@@ -131,12 +138,7 @@
                     >
                         @foreach (\App\Models\EmailFilter::statuses() as $statusValue)
                             <option value="{{ $statusValue }}" @selected(old('status', $email['status']) === $statusValue)>
-                                @match ($statusValue)
-                                    @case('waiting_reply') في انتظار الرد @break
-                                    @case('replied') تم الرد @break
-                                    @case('ignored') تجاهل @break
-                                    @default {{ $statusValue }}
-                                @endmatch
+                                {{ $statusLabels[$statusValue] ?? $statusValue }}
                             </option>
                         @endforeach
                     </select>
