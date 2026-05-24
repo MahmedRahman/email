@@ -124,6 +124,12 @@
                                     >
                                         تفاصيل
                                     </a>
+                                    <a
+                                        href="{{ route('filters.edit', $email['id']) }}"
+                                        class="rounded-lg border border-blue-200 bg-blue-50 px-3 py-1.5 text-xs font-medium text-blue-700 transition-colors hover:bg-blue-100"
+                                    >
+                                        تعديل
+                                    </a>
                                     @include('partials.email-filter-status-actions', [
                                         'emailId' => $email['id'],
                                         'status' => $email['status'],

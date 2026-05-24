@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateEmailFilterRequest;
 use App\Services\EmailFilters\EmailFiltersDataService;
 use App\Services\EmailFilters\EmailReplyGeneratorService;
 use App\Services\Settings\SettingsDataService;
@@ -72,6 +73,36 @@ class EmailFiltersController extends Controller
       'replyInstructions' => $this->settingsData->getReplyInstructions(),
       'hasDeepSeekApiKey' => $this->settingsData->hasDeepSeekApiKey(),
     ]);
+  }
+
+  public function edit(string $id): View|RedirectResponse
+  {
+    $email = $this->emailFiltersData->findById($id);
+
+    if ($email === null) {
+      return redirect()
+        ->route('filters.index')
+        ->with('error', 'لم يتم العثور على الرسالة.');
+    }
+
+    return view('filters.edit', [
+      'email' => $email,
+    ]);
+  }
+
+  public function update(UpdateEmailFilterRequest $request, string $id): RedirectResponse
+  {
+    $updated = $this->emailFiltersData->update($id, $request->validated());
+
+    if ($updated === null) {
+      return redirect()
+        ->route('filters.index')
+        ->with('error', 'لم يتم العثور على الرسالة.');
+    }
+
+    return redirect()
+      ->route('filters.show', $id)
+      ->with('success', 'تم حفظ التعديلات بنجاح.');
   }
 
   public function generateReplies(string $id): JsonResponse

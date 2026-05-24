@@ -92,6 +92,29 @@ class EmailFiltersDataService
     return $email->toApiArray();
   }
 
+  /**
+   * @param  array{email_id: string, from: string, subject: string, snippet?: string|null, date: string, status: string}  $data
+   */
+  public function update(string $id, array $data): ?array
+  {
+    $email = EmailFilter::query()->whereKey($id)->first();
+
+    if ($email === null) {
+      return null;
+    }
+
+    $email->update([
+      'email_id' => $data['email_id'],
+      'from_address' => $data['from'],
+      'subject' => $data['subject'],
+      'snippet' => $data['snippet'] ?? '',
+      'date' => trim($data['date']),
+      'status' => $this->normalizeStatus($data['status']),
+    ]);
+
+    return $email->fresh()->toApiArray();
+  }
+
   public function updateStatus(string $id, string $status): bool
   {
     $email = EmailFilter::query()->whereKey($id)->first();

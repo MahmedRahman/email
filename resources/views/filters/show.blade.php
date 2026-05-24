@@ -16,6 +16,12 @@
         </a>
     </div>
 
+    @if (session('success'))
+        <div class="mb-6 rounded-xl border border-emerald-100 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+            {{ session('success') }}
+        </div>
+    @endif
+
     <div class="mb-6 rounded-2xl border border-slate-100 bg-white p-6 shadow-sm sm:p-8">
         <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div class="min-w-0 flex-1">
@@ -28,6 +34,12 @@
                 <span class="rounded-xl bg-slate-50 px-3 py-1.5 text-xs text-slate-600 ring-1 ring-slate-100" dir="ltr">
                     {{ $email['date'] }}
                 </span>
+                <a
+                    href="{{ route('filters.edit', $email['id']) }}"
+                    class="rounded-lg border border-blue-200 bg-blue-50 px-3 py-1.5 text-xs font-medium text-blue-700 transition-colors hover:bg-blue-100"
+                >
+                    تعديل
+                </a>
                 @include('partials.email-filter-status-actions', [
                     'emailId' => $email['id'],
                     'status' => $email['status'],
