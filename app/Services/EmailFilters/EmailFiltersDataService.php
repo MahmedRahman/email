@@ -33,7 +33,7 @@ class EmailFiltersDataService
   }
 
   /**
-   * @return array{all: int, waiting_reply: int, replied: int}
+   * @return array{all: int, waiting_reply: int, replied: int, ignored: int}
    */
   public function getStatusCounts(): array
   {
@@ -44,11 +44,13 @@ class EmailFiltersDataService
 
     $waiting = (int) ($counts[EmailFilter::STATUS_WAITING_REPLY] ?? 0);
     $replied = (int) ($counts[EmailFilter::STATUS_REPLIED] ?? 0);
+    $ignored = (int) ($counts[EmailFilter::STATUS_IGNORED] ?? 0);
 
     return [
-      'all' => $waiting + $replied,
+      'all' => $waiting + $replied + $ignored,
       'waiting_reply' => $waiting,
       'replied' => $replied,
+      'ignored' => $ignored,
     ];
   }
 
@@ -128,8 +130,10 @@ class EmailFiltersDataService
 
   private function normalizeStatus(string $status): string
   {
-    return $status === EmailFilter::STATUS_REPLIED
-      ? EmailFilter::STATUS_REPLIED
-      : EmailFilter::STATUS_WAITING_REPLY;
+    return match ($status) {
+      EmailFilter::STATUS_REPLIED => EmailFilter::STATUS_REPLIED,
+      EmailFilter::STATUS_IGNORED => EmailFilter::STATUS_IGNORED,
+      default => EmailFilter::STATUS_WAITING_REPLY,
+    };
   }
 }

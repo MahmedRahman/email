@@ -22,7 +22,7 @@ class EmailFiltersController extends Controller
   public function index(Request $request): View
   {
     $status = $request->query('status', 'all');
-    $allowed = ['all', EmailFilter::STATUS_WAITING_REPLY, EmailFilter::STATUS_REPLIED];
+    $allowed = array_merge(['all'], EmailFilter::statuses());
 
     if (! in_array($status, $allowed, true)) {
       $status = 'all';
@@ -45,9 +45,11 @@ class EmailFiltersController extends Controller
         ->with('error', 'لم يتم العثور على الرسالة.');
     }
 
-    $message = $status === EmailFilter::STATUS_REPLIED
-      ? 'تم تحديث الحالة إلى: تم الرد.'
-      : 'تم تحديث الحالة إلى: في انتظار الرد.';
+    $message = match ($status) {
+      EmailFilter::STATUS_REPLIED => 'تم تحديث الحالة إلى: تم الرد.',
+      EmailFilter::STATUS_IGNORED => 'تم تحديث الحالة إلى: تجاهل.',
+      default => 'تم تحديث الحالة إلى: في انتظار الرد.',
+    };
 
     return redirect()
       ->back()

@@ -28,23 +28,11 @@
                 <span class="rounded-xl bg-slate-50 px-3 py-1.5 text-xs text-slate-600 ring-1 ring-slate-100" dir="ltr">
                     {{ $email['date'] }}
                 </span>
+                @include('partials.email-filter-status-actions', [
+                    'emailId' => $email['id'],
+                    'status' => $email['status'],
+                ])
                 @if ($email['status'] === 'waiting_reply')
-                    <form method="POST" action="{{ route('filters.update-status', $email['id']) }}" class="inline">
-                        @csrf
-                        <input type="hidden" name="status" value="replied">
-                        <button type="submit" class="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-xs font-medium text-emerald-700 hover:bg-emerald-100">
-                            تم الرد
-                        </button>
-                    </form>
-                @else
-                    <form method="POST" action="{{ route('filters.update-status', $email['id']) }}" class="inline">
-                        @csrf
-                        <input type="hidden" name="status" value="waiting_reply">
-                        <button type="submit" class="rounded-lg border border-amber-200 bg-amber-50 px-3 py-1.5 text-xs font-medium text-amber-700 hover:bg-amber-100">
-                            انتظار الرد
-                        </button>
-                    </form>
-                @endif
                 <button
                     type="button"
                     id="generate-replies-btn"
@@ -57,6 +45,7 @@
                     </svg>
                     <span id="generate-replies-label">اقتراح ردود</span>
                 </button>
+                @endif
                 <form
                     method="POST"
                     action="{{ route('filters.destroy', $email['id']) }}"

@@ -10,6 +10,20 @@ class EmailFilter extends Model
 
   public const STATUS_REPLIED = 'replied';
 
+  public const STATUS_IGNORED = 'ignored';
+
+  /**
+   * @return array<int, string>
+   */
+  public static function statuses(): array
+  {
+    return [
+      self::STATUS_WAITING_REPLY,
+      self::STATUS_REPLIED,
+      self::STATUS_IGNORED,
+    ];
+  }
+
   public $incrementing = false;
 
   protected $keyType = 'string';

@@ -4,11 +4,13 @@
     $styles = match ($status) {
         'replied' => 'bg-emerald-50 text-emerald-700 ring-emerald-600/20',
         'waiting_reply' => 'bg-amber-50 text-amber-700 ring-amber-600/20',
+        'ignored' => 'bg-slate-100 text-slate-600 ring-slate-500/20',
         default => 'bg-slate-50 text-slate-600 ring-slate-500/20',
     };
     $label = match ($status) {
         'replied' => 'تم الرد',
         'waiting_reply' => 'في انتظار الرد',
+        'ignored' => 'تجاهل',
         default => $status,
     };
 @endphp

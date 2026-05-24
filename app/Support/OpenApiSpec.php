@@ -210,7 +210,8 @@ class OpenApiSpec
                                   'properties' => [
                                     'all' => ['type' => 'integer', 'example' => 6],
                                     'waiting_reply' => ['type' => 'integer', 'example' => 3],
-                                    'replied' => ['type' => 'integer', 'example' => 3],
+                                    'replied' => ['type' => 'integer', 'example' => 2],
+                                    'ignored' => ['type' => 'integer', 'example' => 1],
                                   ],
                                 ],
                                 'email_instructions_enabled' => ['type' => 'boolean', 'example' => true],
@@ -372,9 +373,9 @@ class OpenApiSpec
               'date' => ['type' => 'string', 'format' => 'date-time', 'example' => '2026-05-21 09:42'],
               'status' => [
                 'type' => 'string',
-                'enum' => ['waiting_reply', 'replied'],
+                'enum' => ['waiting_reply', 'replied', 'ignored'],
                 'example' => 'waiting_reply',
-                'description' => 'في انتظار الرد | تم الرد',
+                'description' => 'في انتظار الرد | تم الرد | تجاهل',
               ],
             ],
           ],
