@@ -47,7 +47,6 @@ class EmailFilterController extends Controller
       'data' => [
         'count' => count($emails),
         'status' => EmailFilter::STATUS_WAITING_REPLY,
-        'reply_instructions' => $this->settingsData->getReplyInstructions(),
         'emails' => $emails,
       ],
     ]);

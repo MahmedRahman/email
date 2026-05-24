@@ -154,7 +154,7 @@ class OpenApiSpec
           'get' => [
             'tags' => ['Email Filters'],
             'summary' => 'Get emails awaiting reply',
-            'description' => 'يعيد الرسائل التي حالتها waiting_reply (في انتظار الرد) مع تعليمات الرد.',
+            'description' => 'يعيد الرسائل التي حالتها waiting_reply (في انتظار الرد).',
             'operationId' => 'getPendingReplyEmails',
             'responses' => [
               '200' => [
@@ -170,7 +170,6 @@ class OpenApiSpec
                           'properties' => [
                             'count' => ['type' => 'integer', 'example' => 3],
                             'status' => ['type' => 'string', 'example' => 'waiting_reply'],
-                            'reply_instructions' => ['type' => 'string'],
                             'emails' => [
                               'type' => 'array',
                               'items' => ['$ref' => '#/components/schemas/EmailFilterItem'],
