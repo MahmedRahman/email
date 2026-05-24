@@ -5,7 +5,7 @@
         ['label' => 'سير العمل', 'icon' => 'workflows', 'disabled' => true],
         ['label' => 'سجلات الأتمتة', 'icon' => 'logs', 'disabled' => true],
         ['label' => 'الإعدادات', 'icon' => 'settings', 'route' => 'settings.index'],
-        ['label' => 'Swagger', 'icon' => 'swagger', 'route' => 'swagger.index', 'new_tab' => true],
+        ['label' => 'Swagger', 'icon' => 'swagger', 'url' => route('swagger.index'), 'new_tab' => true],
     ];
 @endphp
 
@@ -37,14 +37,14 @@
                     <span class="mr-auto rounded-md bg-slate-100 px-1.5 py-0.5 text-[10px] font-medium">قريباً</span>
                 </span>
             @else
-                @php($isActive = request()->routeIs($item['route']) || request()->routeIs(($item['route_pattern'] ?? $item['route']).'*'))
+                @php($isActive = isset($item['route']) && (request()->routeIs($item['route']) || request()->routeIs(($item['route_pattern'] ?? $item['route']).'*')))
                 <a
-                    href="{{ route($item['route']) }}"
+                    href="{{ $item['url'] ?? route($item['route']) }}"
                     @if ($item['new_tab'] ?? false) target="_blank" rel="noopener noreferrer" @endif
                     @class([
                         'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors',
-                        'bg-blue-50 text-blue-700' => $isActive,
-                        'text-slate-600 hover:bg-slate-50 hover:text-slate-900' => ! $isActive,
+                        'bg-blue-50 text-blue-700' => $isActive && ! ($item['new_tab'] ?? false),
+                        'text-slate-600 hover:bg-slate-50 hover:text-slate-900' => ! $isActive || ($item['new_tab'] ?? false),
                     ])
                 >
                     @include('partials.sidebar-icon', ['icon' => $item['icon']])

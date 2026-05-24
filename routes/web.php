@@ -21,6 +21,7 @@ Route::middleware('guest.demo')->group(function () {
 });
 
 Route::get('/api/openapi.json', [SwaggerController::class, 'spec'])->name('swagger.spec');
+Route::get('/swagger', [SwaggerController::class, 'index'])->name('swagger.index');
 Route::get('/api/email-filters/information', [EmailFilterApiController::class, 'information'])->name('api.email-filters.information');
 Route::get('/api/email-filters/pending-replies', [EmailFilterApiController::class, 'pendingReplies'])->name('api.email-filters.pending-replies');
 Route::get('/api/email-filters', [EmailFilterApiController::class, 'show'])->name('api.email-filters.show');
@@ -43,6 +44,5 @@ Route::middleware('auth.demo')->group(function () {
   Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
   Route::post('/settings', [SettingsController::class, 'update'])->name('settings.update');
   Route::post('/settings/format-instructions', [SettingsController::class, 'formatInstructions'])->name('settings.format-instructions');
-  Route::get('/swagger', [SwaggerController::class, 'index'])->name('swagger.index');
   Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });
