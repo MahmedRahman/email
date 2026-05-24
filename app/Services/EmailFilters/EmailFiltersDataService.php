@@ -25,6 +25,14 @@ class EmailFiltersDataService
   }
 
   /**
+   * @return array<int, array<string, mixed>>
+   */
+  public function getEmailsAwaitingReply(): array
+  {
+    return $this->getEmails(EmailFilter::STATUS_WAITING_REPLY);
+  }
+
+  /**
    * @return array{all: int, waiting_reply: int, replied: int}
    */
   public function getStatusCounts(): array
@@ -93,6 +101,19 @@ class EmailFiltersDataService
     $email->update(['status' => $this->normalizeStatus($status)]);
 
     return true;
+  }
+
+  public function updateStatusByEmailId(string $emailId, string $status): ?array
+  {
+    $email = EmailFilter::query()->where('email_id', $emailId)->first();
+
+    if ($email === null) {
+      return null;
+    }
+
+    $email->update(['status' => $this->normalizeStatus($status)]);
+
+    return $email->fresh()->toApiArray();
   }
 
   public function deleteById(string $id): bool

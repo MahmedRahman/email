@@ -41,6 +41,150 @@ class OpenApiSpec
             ],
           ],
         ],
+        '/api/email-filters/suggested-replies' => [
+          'post' => [
+            'tags' => ['Email Filters'],
+            'summary' => 'Get suggested replies for an email',
+            'description' => 'يحلّل الرسالة ويعيد ردّين مقترحين باستخدام DeepSeek وتعليمات الرد من الإعدادات.',
+            'operationId' => 'getSuggestedReplies',
+            'requestBody' => [
+              'required' => true,
+              'content' => [
+                'application/json' => [
+                  'schema' => [
+                    'type' => 'object',
+                    'required' => ['id'],
+                    'properties' => [
+                      'id' => [
+                        'type' => 'string',
+                        'description' => 'معرف الرسالة (EmailId)',
+                        'example' => 'msg-10042',
+                      ],
+                    ],
+                  ],
+                ],
+              ],
+            ],
+            'responses' => [
+              '200' => [
+                'description' => 'الاستجابة دائماً HTTP 200',
+                'content' => [
+                  'application/json' => [
+                    'schema' => [
+                      'oneOf' => [
+                        [
+                          'type' => 'object',
+                          'properties' => [
+                            'success' => ['type' => 'boolean', 'example' => true],
+                            'data' => [
+                              'type' => 'object',
+                              'properties' => [
+                                'email' => ['$ref' => '#/components/schemas/EmailFilterItem'],
+                                'reply_instructions' => ['type' => 'string'],
+                                'replies' => [
+                                  'type' => 'array',
+                                  'items' => ['$ref' => '#/components/schemas/SuggestedReplyItem'],
+                                ],
+                              ],
+                            ],
+                          ],
+                        ],
+                        ['$ref' => '#/components/schemas/ErrorResponse'],
+                      ],
+                    ],
+                  ],
+                ],
+              ],
+            ],
+          ],
+        ],
+        '/api/email-filters/mark-replied' => [
+          'post' => [
+            'tags' => ['Email Filters'],
+            'summary' => 'Mark email as replied',
+            'description' => 'يغيّر حالة الرسالة إلى replied (تم الرد) باستخدام id (EmailId).',
+            'operationId' => 'markEmailReplied',
+            'requestBody' => [
+              'required' => true,
+              'content' => [
+                'application/json' => [
+                  'schema' => [
+                    'type' => 'object',
+                    'required' => ['id'],
+                    'properties' => [
+                      'id' => [
+                        'type' => 'string',
+                        'description' => 'معرف الرسالة (EmailId)',
+                        'example' => 'msg-10042',
+                      ],
+                    ],
+                  ],
+                ],
+              ],
+            ],
+            'responses' => [
+              '200' => [
+                'description' => 'الاستجابة دائماً HTTP 200',
+                'content' => [
+                  'application/json' => [
+                    'schema' => [
+                      'oneOf' => [
+                        [
+                          'type' => 'object',
+                          'properties' => [
+                            'success' => ['type' => 'boolean', 'example' => true],
+                            'data' => [
+                              'type' => 'object',
+                              'properties' => [
+                                'email' => ['$ref' => '#/components/schemas/EmailFilterItem'],
+                              ],
+                            ],
+                          ],
+                        ],
+                        ['$ref' => '#/components/schemas/ErrorResponse'],
+                      ],
+                    ],
+                  ],
+                ],
+              ],
+            ],
+          ],
+        ],
+        '/api/email-filters/pending-replies' => [
+          'get' => [
+            'tags' => ['Email Filters'],
+            'summary' => 'Get emails awaiting reply',
+            'description' => 'يعيد الرسائل التي حالتها waiting_reply (في انتظار الرد) مع تعليمات الرد.',
+            'operationId' => 'getPendingReplyEmails',
+            'responses' => [
+              '200' => [
+                'description' => 'الاستجابة دائماً HTTP 200',
+                'content' => [
+                  'application/json' => [
+                    'schema' => [
+                      'type' => 'object',
+                      'properties' => [
+                        'success' => ['type' => 'boolean', 'example' => true],
+                        'data' => [
+                          'type' => 'object',
+                          'properties' => [
+                            'count' => ['type' => 'integer', 'example' => 3],
+                            'status' => ['type' => 'string', 'example' => 'waiting_reply'],
+                            'reply_instructions' => ['type' => 'string'],
+                            'emails' => [
+                              'type' => 'array',
+                              'items' => ['$ref' => '#/components/schemas/EmailFilterItem'],
+                            ],
+                          ],
+                        ],
+                      ],
+                    ],
+                  ],
+                ],
+              ],
+            ],
+          ],
+        ],
         '/api/email-filters/information' => [
           'get' => [
             'tags' => ['Email Filters'],
@@ -188,6 +332,13 @@ class OpenApiSpec
                 'type' => 'string',
                 'description' => 'تعليمات صياغة الرد على البريد',
               ],
+            ],
+          ],
+          'SuggestedReplyItem' => [
+            'type' => 'object',
+            'properties' => [
+              'title' => ['type' => 'string', 'example' => 'رد رسمي'],
+              'body' => ['type' => 'string', 'example' => 'مرحباً، شكراً لتواصلك...'],
             ],
           ],
           'EmailFilterCreateInput' => [

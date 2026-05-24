@@ -22,8 +22,11 @@ Route::middleware('guest.demo')->group(function () {
 
 Route::get('/api/openapi.json', [SwaggerController::class, 'spec'])->name('swagger.spec');
 Route::get('/api/email-filters/information', [EmailFilterApiController::class, 'information'])->name('api.email-filters.information');
+Route::get('/api/email-filters/pending-replies', [EmailFilterApiController::class, 'pendingReplies'])->name('api.email-filters.pending-replies');
 Route::get('/api/email-filters', [EmailFilterApiController::class, 'show'])->name('api.email-filters.show');
 Route::post('/api/email-filters', [EmailFilterApiController::class, 'store'])->name('api.email-filters.store');
+Route::post('/api/email-filters/mark-replied', [EmailFilterApiController::class, 'markReplied'])->name('api.email-filters.mark-replied');
+Route::post('/api/email-filters/suggested-replies', [EmailFilterApiController::class, 'suggestedReplies'])->name('api.email-filters.suggested-replies');
 Route::get('/api/settings', [SettingsApiController::class, 'show'])->name('api.settings.show');
 
 Route::middleware('auth.demo')->group(function () {
