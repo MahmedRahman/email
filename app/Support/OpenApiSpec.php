@@ -10,22 +10,22 @@ class OpenApiSpec
       'openapi' => '3.0.3',
       'info' => [
         'title' => 'Email Filter API',
-        'description' => 'واجهة برمجة مساعد البريد — فلاتر البريد والإعدادات. لا يتطلب تسجيل دخول.',
+        'description' => 'Email assistant API — email filters and settings. No login required.',
         'version' => '1.0.0',
       ],
       'servers' => [
-        ['url' => '/', 'description' => 'التطبيق الحالي'],
+        ['url' => '/', 'description' => 'Current application'],
       ],
       'paths' => [
         '/api/settings' => [
           'get' => [
             'tags' => ['Settings'],
             'summary' => 'Get application settings',
-            'description' => 'يعيد إعدادات مساعد البريد (نفس بيانات صفحة /settings).',
+            'description' => 'Returns email assistant settings (same data as /settings page).',
             'operationId' => 'getSettings',
             'responses' => [
               '200' => [
-                'description' => 'الاستجابة دائماً HTTP 200',
+                'description' => 'Always returns HTTP 200',
                 'content' => [
                   'application/json' => [
                     'schema' => [
@@ -45,7 +45,7 @@ class OpenApiSpec
           'post' => [
             'tags' => ['Email Filters'],
             'summary' => 'Get suggested replies for an email',
-            'description' => 'يحلّل الرسالة ويعيد ردّين مقترحين باستخدام DeepSeek وتعليمات الرد من الإعدادات.',
+            'description' => 'Analyzes the email and returns two suggested replies using DeepSeek and reply instructions from settings.',
             'operationId' => 'getSuggestedReplies',
             'requestBody' => [
               'required' => true,
@@ -57,7 +57,7 @@ class OpenApiSpec
                     'properties' => [
                       'id' => [
                         'type' => 'string',
-                        'description' => 'معرف الرسالة (EmailId)',
+                        'description' => 'Email message ID (EmailId)',
                         'example' => 'msg-10042',
                       ],
                     ],
@@ -67,7 +67,7 @@ class OpenApiSpec
             ],
             'responses' => [
               '200' => [
-                'description' => 'الاستجابة دائماً HTTP 200',
+                'description' => 'Always returns HTTP 200',
                 'content' => [
                   'application/json' => [
                     'schema' => [
@@ -102,7 +102,7 @@ class OpenApiSpec
           'post' => [
             'tags' => ['Email Filters'],
             'summary' => 'Update email status',
-            'description' => 'يغيّر حالة الرسالة باستخدام id (EmailId) و status.',
+            'description' => 'Updates email status using id (EmailId) and status.',
             'operationId' => 'updateEmailFilterStatus',
             'requestBody' => [
               'required' => true,
@@ -114,14 +114,14 @@ class OpenApiSpec
                     'properties' => [
                       'id' => [
                         'type' => 'string',
-                        'description' => 'معرف الرسالة (EmailId)',
+                        'description' => 'Email message ID (EmailId)',
                         'example' => 'msg-10042',
                       ],
                       'status' => [
                         'type' => 'string',
                         'enum' => ['waiting_reply', 'replied', 'ignored'],
                         'example' => 'replied',
-                        'description' => 'في انتظار الرد | تم الرد | تجاهل',
+                        'description' => 'waiting_reply | replied | ignored',
                       ],
                     ],
                   ],
@@ -130,7 +130,7 @@ class OpenApiSpec
             ],
             'responses' => [
               '200' => [
-                'description' => 'الاستجابة دائماً HTTP 200',
+                'description' => 'Always returns HTTP 200',
                 'content' => [
                   'application/json' => [
                     'schema' => [
@@ -160,7 +160,7 @@ class OpenApiSpec
           'post' => [
             'tags' => ['Email Filters'],
             'summary' => 'Mark email as replied',
-            'description' => 'يغيّر حالة الرسالة إلى replied (تم الرد) باستخدام id (EmailId). اختصار لـ update-status.',
+            'description' => 'Sets email status to replied using id (EmailId). Shortcut for update-status.',
             'operationId' => 'markEmailReplied',
             'requestBody' => [
               'required' => true,
@@ -172,7 +172,7 @@ class OpenApiSpec
                     'properties' => [
                       'id' => [
                         'type' => 'string',
-                        'description' => 'معرف الرسالة (EmailId)',
+                        'description' => 'Email message ID (EmailId)',
                         'example' => 'msg-10042',
                       ],
                     ],
@@ -182,7 +182,7 @@ class OpenApiSpec
             ],
             'responses' => [
               '200' => [
-                'description' => 'الاستجابة دائماً HTTP 200',
+                'description' => 'Always returns HTTP 200',
                 'content' => [
                   'application/json' => [
                     'schema' => [
@@ -216,7 +216,7 @@ class OpenApiSpec
             'operationId' => 'getPendingReplyEmails',
             'responses' => [
               '200' => [
-                'description' => 'الاستجابة دائماً HTTP 200',
+                'description' => 'Always returns HTTP 200',
                 'content' => [
                   'application/json' => [
                     'schema' => [
